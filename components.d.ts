@@ -11,8 +11,31 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Breadcrum: typeof import('./src/components/Breadcrum.vue')['default']
+    Breadcrumb: typeof import('primevue/breadcrumb')['default']
     Button: typeof import('primevue/button')['default']
+    ButtonGroup: typeof import('primevue/buttongroup')['default']
+    CustomBreadcrumb: typeof import('./src/components/CustomBreadcrumb.vue')['default']
+    'CustomBreadcrumb.vue': typeof import('./src/components/CustomBreadcrumb.vue.vue')['default']
+    DataView: typeof import('primevue/dataview')['default']
+    Divider: typeof import('primevue/divider')['default']
+    Header: typeof import('./src/components/Header.vue')['default']
+    IconField: typeof import('primevue/iconfield')['default']
+    InputIcon: typeof import('primevue/inputicon')['default']
+    InputText: typeof import('primevue/inputtext')['default']
+    Menu: typeof import('primevue/menu')['default']
+    Popover: typeof import('primevue/popover')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Select: typeof import('primevue/select')['default']
+    SelectButton: typeof import('primevue/selectbutton')['default']
+    Sidebar: typeof import('./src/components/Sidebar.vue')['default']
+    TableGrid: typeof import('./src/components/TableGrid.vue')['default']
+    Tag: typeof import('primevue/tag')['default']
+    Toast: typeof import('primevue/toast')['default']
+    ToggleSwitch: typeof import('primevue/toggleswitch')['default']
+  }
+  export interface GlobalDirectives {
+    Tooltip: typeof import('primevue/tooltip')['default']
   }
 }
