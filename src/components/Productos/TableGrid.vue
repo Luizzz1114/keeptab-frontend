@@ -1,35 +1,21 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import type { Producto } from '@/types/productos.type';
+import type { LayoutType } from '@/types/ui.types';
 
-// --- 1. Tipos e Interfaces ---
-export interface Producto {
-  id: number;
-  nombre: string;
-  contable: boolean;
-  stock: number | null;
-  precio: number;
-}
-
-type LayoutType = 'list' | 'grid';
-
-// --- 2. Props y Emits ---
-const props = withDefaults(
-  defineProps<{
-    productos?: Producto[];
-  }>(),
-  {
-    productos: () => [
-      { id: 1, nombre: 'Laptop Pro 15"', contable: true, stock: 24, precio: 1299.99 },
-      { id: 2, nombre: 'Suscripción de Software', contable: false, stock: null, precio: 15.0 },
-      { id: 3, nombre: 'Teclado Mecánico RGB', contable: true, stock: 0, precio: 85.5 },
-      { id: 4, nombre: 'Monitor 4K', contable: true, stock: 12, precio: 350.0 },
-    ],
-  },
-);
+// --- 1. Props y Emits ---
+const props = withDefaults(defineProps<{ productos?: Producto[] }>(), {
+  productos: () => [
+    { id: 1, nombre: 'Laptop Pro 15"', categoria: 'Tecnología', contable: true, stock: 24, precio: 1299.99 },
+    { id: 2, nombre: 'Suscripción de Software', categoria: 'Tecnología', contable: false, stock: null, precio: 15.0 },
+    { id: 3, nombre: 'Teclado Mecánico RGB', categoria: 'Tecnología', contable: true, stock: 0, precio: 85.5 },
+    { id: 4, nombre: 'Monitor 4K', categoria: 'Tecnología', contable: true, stock: 12, precio: 350.0 },
+  ],
+});
 
 const emit = defineEmits(['edit', 'delete']);
 
-// --- 3. Estado (Refs) ---
+// --- 2. Estado (Refs) ---
 const layout = ref<LayoutType>('grid');
 const options = ref<LayoutType[]>(['list', 'grid']);
 const rows = ref<number>(8);
@@ -38,7 +24,7 @@ const searchQuery = ref<string>('');
 const menu = ref<any>(null);
 const selectedItem = ref<Producto | null>(null);
 
-// --- 4. Propiedades Computadas ---
+// --- 3. Propiedades Computadas ---
 const filteredData = computed(() => {
   if (!searchQuery.value) return props.productos;
   const query = searchQuery.value.toLowerCase();
@@ -60,7 +46,7 @@ const menuOptions = computed(() => [
   },
 ]);
 
-// --- 5. Métodos ---
+// --- 4. Métodos ---
 const toggleMenu = (event: Event, item: Producto) => {
   selectedItem.value = item;
   menu.value?.toggle(event);
@@ -159,6 +145,10 @@ const toggleMenu = (event: Event, item: Producto) => {
               </template>
             </Column>
             <Column
+              field="categoria"
+              header="Categoría"
+            ></Column>
+            <Column
               field="precio"
               header="Precio"
             >
@@ -214,7 +204,7 @@ const toggleMenu = (event: Event, item: Producto) => {
             </div>
             <div class="flex flex-col">
               <span class="truncate text-base! font-semibold whitespace-nowrap">{{ item.nombre }}</span>
-              <span class="text-xs! font-medium text-zinc-400 dark:text-zinc-500">categoría</span>
+              <span class="text-xs! font-medium text-zinc-400 dark:text-zinc-500">{{ item.categoria }}</span>
             </div>
             <Divider class="my-1!" />
             <div class="flex items-center justify-between">

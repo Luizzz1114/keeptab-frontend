@@ -1,21 +1,8 @@
 <script setup lang="ts">
-defineProps<{
-  isCollapsed: boolean;
-}>();
+import type { MenuGroup } from '@/types/ui.types';
 
+defineProps<{ isCollapsed: boolean }>();
 const emit = defineEmits(['toggle-sidebar']);
-
-interface MenuItem {
-  name: string;
-  path: string;
-  icon: string;
-  roles?: string[];
-}
-
-interface MenuGroup {
-  title: string;
-  items: MenuItem[];
-}
 
 const menuGroups: MenuGroup[] = [
   {

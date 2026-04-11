@@ -1,15 +1,7 @@
 <script setup lang="ts">
-interface BreadcrumbItem {
-  label: string;
-  icon?: string;
-  route?: string;
-}
+import type { BreadcrumbItem } from '@/types/ui.types';
 
-interface Props {
-  items?: BreadcrumbItem[];
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<{ items?: BreadcrumbItem[] }>(), {
   items: () => [],
 });
 

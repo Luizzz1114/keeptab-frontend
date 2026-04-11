@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { fechaFormateada } from '@/utils/formatters';
 
-defineProps<{
-  isDark: boolean;
-}>();
-
+defineProps<{ isDark: boolean }>();
 const emit = defineEmits(['toggle-sidebar', 'toggle-dark-mode']);
 </script>
 
