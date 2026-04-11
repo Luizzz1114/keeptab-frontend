@@ -5,6 +5,7 @@
 
 @theme {
   --color-zinc-950: #121215 !important;
+  --color-red-450: #ff5c5c;
 }
 
 /* --- CONFIGURACIÓN DE FUENTES --- */
@@ -65,4 +66,52 @@ span::after {
 
 .p-breadcrumb {
   padding: 0 !important;
+}
+
+/* --- DATATABLE --- */
+.p-datatable-table {
+  min-width: 50rem;
+}
+
+.p-datatable-column-title {
+  white-space: nowrap !important;
+  font-weight: bolder !important;
+}
+
+.p-datatable-header-cell {
+  background-color: var(--color-zinc-50) !important;
+}
+
+.p-datatable-tbody > tr > td {
+  padding: 0.45rem 1rem !important;
+}
+
+.p-datatable-tbody > tr:last-child > td {
+  border-bottom: 0 !important;
+}
+
+/* --- MENÚS (ESTILOS DE PELIGRO/DANGER) --- */
+.menu-item-danger .p-menu-item-icon,
+.menu-item-danger .p-menu-item-label {
+  color: var(--color-red-450) !important;
+}
+
+.menu-item-danger .p-menu-item-link:hover,
+.menu-item-danger.p-focus .p-menu-item-link {
+  background-color: var(--color-red-100) !important;
+}
+
+.menu-item-danger:not(.p-focus) .p-menu-item-link:not(:hover) {
+  background-color: transparent !important;
+}
+
+/* --- MODO OSCURO (DARK MODE) --- */
+.dark .p-datatable-header-cell {
+  background-color: color-mix(in srgb, var(--color-zinc-950) 50%, transparent) !important;
+  border-bottom: 1px solid var(--color-zinc-700) !important;
+}
+
+.dark .menu-item-danger .p-menu-item-link:hover,
+.dark .menu-item-danger.p-focus .p-menu-item-link {
+  background-color: rgba(182, 39, 39, 0.164) !important;
 }

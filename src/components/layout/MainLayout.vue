@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import Header from '@/components/Header.vue';
-import Sidebar from '@/components/Sidebar.vue';
+import Header from '@/components/ui/Header.vue';
+import Sidebar from '@/components/ui/Sidebar.vue';
 
 // --- Estado del Sidebar ---
 const savedState = localStorage.getItem('sidebarCollapsed');

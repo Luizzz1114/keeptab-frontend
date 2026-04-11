@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import MainLayout from '@/layout/MainLayout.vue';
+import MainLayout from '@/components/layout/MainLayout.vue';
 import Mostrador from '@/views/Mostrador.vue';
 import Productos from '@/views/Productos.vue';
 import CuentasClaras from '@/views/CuentasClaras.vue';
