@@ -21,16 +21,24 @@ const emit = defineEmits(['confirmDelete']);
 <template>
   <ConfirmDialog
     group="headless"
-    class="overflow-hidden w-11/12 max-w-md rounded-2xl!"
+    class="w-11/12 max-w-md overflow-hidden rounded-2xl!"
   >
     <template #container="{ message, acceptCallback, rejectCallback }">
-      <div class="bg-zinc-0 dark:bg-zinc-850 flex flex-col items-center p-6">
+      <div class="relative bg-zinc-0 dark:bg-zinc-850 flex flex-col items-center p-6">
+        <Button
+          @click="rejectCallback"
+          icon="fi-br-cross"
+          severity="secondary"
+          class="size-8! *:text-xs! absolute! right-6 top-6"
+        />
         <div class="grid size-10 place-items-center rounded-xl border border-red-200 bg-red-100 text-lg dark:border-red-500/20 dark:bg-red-500/10">
           <i class="fi-rr-hexagon-exclamation text-xl! text-red-400!"></i>
         </div>
         <span class="mt-2 text-xl! font-bold">{{ message.header }}</span>
         <p class="mt-1 text-center">¿Está seguro de eliminar este registro?</p>
-        <div class="mt-4 flex w-full flex-col overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800/50">
+        <div
+          class="dark:bg-zinc-800/50rounded-2xl mt-4 flex w-full flex-col overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50 shadow-xs ring-2 ring-white ring-inset sm:grid-cols-2 dark:border-zinc-700 dark:bg-zinc-800/65 dark:ring-zinc-900/65"
+        >
           <div
             v-for="(val, label, index) in message.message"
             :key="label"

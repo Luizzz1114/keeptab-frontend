@@ -16,7 +16,7 @@ const menuGroups: MenuGroup[] = [
   {
     title: 'Gestión',
     items: [
-      { name: 'Turnos y caja', path: '/turnos', icon: 'fi-sr-wallet' },
+      { name: 'Jornadas', path: '/jornadas', icon: 'fi-sr-calculator' },
       { name: 'Usuarios', path: '/usuarios', icon: 'fi-sr-user' },
     ],
   },
@@ -27,15 +27,15 @@ const menuGroups: MenuGroup[] = [
   <div
     v-if="!isCollapsed"
     @click="emit('toggle-sidebar')"
-    class="fixed inset-0 z-20 bg-zinc-900/30 backdrop-blur-sm transition-opacity md:hidden"
+    class="fixed inset-0 z-50 bg-zinc-900/30 backdrop-blur-sm transition-opacity md:hidden"
   ></div>
   <aside
     :class="isCollapsed ? '-translate-x-full md:w-0 md:translate-x-0' : 'w-62 translate-x-0'"
-    class="fixed inset-y-0 left-0 z-30 h-full overflow-hidden bg-zinc-200 text-zinc-700 transition-all duration-300 ease-in-out md:relative dark:bg-zinc-950 dark:text-zinc-200"
+    class="fixed inset-y-0 left-0 z-60 h-full overflow-hidden bg-zinc-200 text-zinc-700 transition-all duration-300 ease-in-out md:relative dark:bg-zinc-950 dark:text-zinc-200"
   >
     <div class="flex h-full w-62 flex-col">
       <div class="mt-1.5 flex h-12 shrink-0 items-center gap-3 overflow-hidden px-4">
-        <div class="grid size-8 shrink-0 place-items-center rounded-lg bg-emerald-500 p-1 text-xl text-white">
+        <div class="grid size-9 shrink-0 place-items-center rounded-lg bg-emerald-500 p-1 text-xl text-white">
           <i class="fi-sr-receipt"></i>
         </div>
         <span class="text-lg font-extrabold whitespace-nowrap">KeepTab</span>

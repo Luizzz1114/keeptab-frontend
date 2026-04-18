@@ -1,58 +1,52 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { Producto } from '@/types/productos.types';
+import type { Usuario } from '@/types/usuarios.types';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
-import { getProductoSchema, categoriasProductos, conteoOpciones } from '@/schemas/productos.schema';
-import productosService from '@/api/services/productos.service';
+import { getUsuarioSchema, roles } from '@/schemas/usuarios.schema';
+import usuariosService from '@/api/services/usuarios.service';
 
 const visible = defineModel<boolean>('visible');
 const emit = defineEmits(['confirmCreate']);
-const producto = ref<Producto>({
-  nombre: '',
-  categoria: '',
-  precio: 0.0,
-  conteo: false,
-  stock: 0,
+const usuario = ref<Usuario>({
+  username: '',
+  rol: '',
+  password: '',
+  confirmPassword: '',
 });
 
-const isCheckingNombre = ref(false);
+const isCheckingUsername = ref(false);
 const memoriaValidaciones = new Map<string, boolean>();
 let debounceTimer: ReturnType<typeof setTimeout>;
 
-const verificarNombre = (nombre: string): Promise<boolean> => {
-  if (!nombre) return Promise.resolve(true);
-  if (memoriaValidaciones.has(nombre)) {
-    return Promise.resolve(memoriaValidaciones.get(nombre)!);
+const verificarUsername = (username: string): Promise<boolean> => {
+  if (!username) return Promise.resolve(true);
+  if (memoriaValidaciones.has(username)) {
+    return Promise.resolve(memoriaValidaciones.get(username)!);
   }
-  isCheckingNombre.value = true;
+  isCheckingUsername.value = true;
   return new Promise((resolve) => {
     clearTimeout(debounceTimer); 
     debounceTimer = setTimeout(async () => {
       try {
-        const response = await productosService.search(nombre);
+        const response = await usuariosService.search(username);
         const disponible = response.data.length === 0;
-        memoriaValidaciones.set(nombre, disponible); 
+        memoriaValidaciones.set(username, disponible); 
         resolve(disponible);
       } catch (error) {
         resolve(false);
       } finally {
-        isCheckingNombre.value = false;
+        isCheckingUsername.value = false;
       }
     }, 500);
   });
 };
 
-const productoSchema = getProductoSchema(verificarNombre);
-const resolver = ref(zodResolver(productoSchema));
+const usuarioSchema = getUsuarioSchema(false, verificarUsername);
+const resolver = ref(zodResolver(usuarioSchema));
 
 const onSubmit = (event: any) => {
   if (!event.valid) return;
-  const data = event.values;
-  const payload: Producto = {
-    ...data,
-    stock: data.conteo ? data.stock : undefined,
-  };
-  emit('confirmCreate', payload);
+  emit('confirmCreate', event.values);
   visible.value = false;
 };
 </script>
@@ -68,10 +62,10 @@ const onSubmit = (event: any) => {
       <div class="flex h-16 items-center justify-between border-b border-zinc-200 p-4 dark:border-zinc-700">
         <div class="flex items-center gap-3">
           <div class="grid size-9 place-items-center rounded-lg bg-emerald-500 text-lg text-white">
-            <i class="fi-sr-box"></i>
+            <i class="fi-sr-user"></i>
           </div>
           <div class="flex flex-col">
-            <span class="text-lg! font-bold dark:text-zinc-200">Registrar producto</span>
+            <span class="text-lg! font-bold dark:text-zinc-200">Registrar usuario</span>
           </div>
         </div>
         <Button
@@ -84,7 +78,7 @@ const onSubmit = (event: any) => {
       <Form
         v-slot="$form"
         :resolver="resolver"
-        :initialValues="producto"
+        :initialValues="usuario"
         @submit="onSubmit"
         class="flex h-full flex-col overflow-hidden"
       >
@@ -97,70 +91,53 @@ const onSubmit = (event: any) => {
               <span class="text-base! font-bold">Información básica</span>
             </div>
             <div class="flex flex-col gap-1">
-              <label for="nombre">Nombre del producto <span class="text-red-500">*</span></label>
-              <IconField>
-                <InputText
-                  name="nombre"
-                  id="nombre"
-                  maxlength="50"
-                  autocomplete="off"
-                  size="small"
-                  fluid
-                />
-                <InputIcon>
-                  <i v-if="isCheckingNombre" class="fi-rr-spinner animate-spin text-emerald-500"></i>
-                </InputIcon>
-              </IconField>
-              <Message
-                v-if="$form.nombre?.invalid"
-                severity="error"
-                size="small"
-                variant="simple"
-              >
-                {{ $form.nombre.error?.message }}
-              </Message>
-            </div>
-            <div class="flex flex-col gap-1">
-              <span>Categoría <span class="text-red-500">*</span></span>
-              <Select
-                name="categoria"
-                :options="categoriasProductos"
-                placeholder="Seleccione"
-                size="small"
-                fluid
-              />
-              <Message
-                v-if="$form.categoria?.invalid"
-                severity="error"
-                size="small"
-                variant="simple"
-              >
-                {{ $form.categoria.error?.message }}
-              </Message>
-            </div>
-            <div class="flex flex-col gap-0.5">
-              <label for="precio">Precio de venta <span class="text-red-500">*</span></label>
+              <label for="username">Nombre de usuario <span class="text-red-500">*</span></label>
               <InputGroup>
-                <InputGroupAddon class="h-9! text-sm! font-semibold">Bs.</InputGroupAddon>
-                <InputNumber
-                  name="precio"
-                  inputId="precio"
-                  mode="decimal"
-                  locale="es-VE"
-                  :minFractionDigits="2"
-                  :maxFractionDigits="2"
+                <InputGroupAddon>
+                  <i v-if="isCheckingUsername" class="fi-rr-spinner animate-spin text-emerald-500"></i>
+                  <i v-else class="fi-rr-user"></i>
+                </InputGroupAddon>
+                <InputText
+                  name="username"
+                  id="username"
+                  maxlength="50"
                   autocomplete="off"
                   size="small"
                   fluid
                 />
               </InputGroup>
               <Message
-                v-if="$form.precio?.invalid"
+                v-if="$form.username?.invalid"
                 severity="error"
                 size="small"
                 variant="simple"
               >
-                {{ $form.precio.error?.message }}
+                {{ $form.username.error?.message }}
+              </Message>
+            </div>
+            <div class="flex flex-col gap-1">
+              <span>Rol <span class="text-red-500">*</span></span>
+              <InputGroup>
+                <InputGroupAddon>
+                  <i class="fi-rr-shield"></i>
+                </InputGroupAddon>
+                <Select
+                  name="rol"
+                  :options="roles"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Seleccione"
+                  size="small"
+                  fluid
+                />
+              </InputGroup>
+              <Message
+                v-if="$form.rol?.invalid"
+                severity="error"
+                size="small"
+                variant="simple"
+              >
+                {{ $form.rol.error?.message }}
               </Message>
             </div>
           </div>
@@ -169,55 +146,62 @@ const onSubmit = (event: any) => {
           >
             <div class="flex items-center gap-2 sm:col-span-2">
               <i class="fi-sr-circle-2 text-xl text-emerald-500"></i>
-              <span class="text-base! font-bold">Control de stock</span>
+              <span class="text-base! font-bold">Contraseña</span>
             </div>
             <div class="flex flex-col gap-1">
-              <span>¿Controlar inventario? <span class="text-red-500">*</span></span>
-              <SelectButton
-                name="conteo"
-                :options="conteoOpciones"
-                optionLabel="label"
-                optionValue="value"
-                fluid
-              />
+              <span>Contraseña</span>
+              <InputGroup>
+                <InputGroupAddon>
+                  <i class="fi-rr-lock"></i>
+                </InputGroupAddon>
+                <Password
+                  name="password"
+                  size="small"
+                  fluid
+                  toggleMask
+                >
+                  <template #header>
+                    <div class="mb-3 font-semibold">Requisitos de seguridad</div>
+                  </template>
+                  <template #footer>
+                    <Divider />
+                    <ul class="pl-2 text-sm leading-normal">
+                      <li>Al menos una minúscula</li>
+                      <li>Al menos una mayúscula</li>
+                      <li>Al menos un número</li>
+                      <li>Mínimo 8 caracteres</li>
+                    </ul>
+                  </template>
+                </Password>
+              </InputGroup>
               <Message
-                v-if="$form.conteo?.invalid"
+                v-if="$form.password?.invalid"
                 severity="error"
                 size="small"
                 variant="simple"
               >
-                {{ $form.conteo.error?.message }}
+                {{ $form.password.error?.message }}
               </Message>
             </div>
             <div class="flex flex-col gap-1">
-              <label for="stock">Stock</label>
-              <InputNumber
-                name="stock"
-                inputId="stock"
-                :disabled="!$form.conteo?.value"
-                showButtons
-                buttonLayout="horizontal"
-                :step="1"
-                :min="0"
-                :max="1000"
-                autocomplete="off"
-                size="small"
-                fluid
-              >
-                <template #incrementbuttonicon>
-                  <i class="fi-rr-plus" />
-                </template>
-                <template #decrementbuttonicon>
-                  <i class="fi-rr-minus" />
-                </template>
-              </InputNumber>
+              <span>Confirmar contraseña</span>
+              <InputGroup>
+                <InputGroupAddon><i class="fi-rr-lock"></i></InputGroupAddon>
+                <Password
+                  name="confirmPassword"
+                  toggleMask
+                  :feedback="false"
+                  size="small"
+                  fluid
+                />
+              </InputGroup>
               <Message
-                v-if="$form.stock?.invalid"
+                v-if="$form.confirmPassword?.invalid"
                 severity="error"
                 size="small"
                 variant="simple"
               >
-                {{ $form.stock.error?.message }}
+                {{ $form.confirmPassword.error?.message }}
               </Message>
             </div>
           </div>

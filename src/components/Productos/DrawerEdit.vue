@@ -1,18 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import type { Producto } from '@/types/productos.types';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { getProductoSchema, categoriasProductos, conteoOpciones } from '@/schemas/productos.schema';
 import productosService from '@/api/services/productos.service';
 
 const visible = defineModel<boolean>('visible');
-const emit = defineEmits(['confirmCreate']);
-const producto = ref<Producto>({
-  nombre: '',
-  categoria: '',
-  precio: 0.0,
-  conteo: false,
-  stock: 0,
+const emit = defineEmits(['confirmEdit']);
+const props = defineProps<{ producto: Producto }>();
+
+const initialValues = computed(() => {
+  const producto = props.producto;
+  return {
+    ...props.producto,
+    precio: Number(producto.precio),
+    conteo: Boolean(producto.conteo),
+  };
 });
 
 const isCheckingNombre = ref(false);
@@ -20,13 +23,15 @@ const memoriaValidaciones = new Map<string, boolean>();
 let debounceTimer: ReturnType<typeof setTimeout>;
 
 const verificarNombre = (nombre: string): Promise<boolean> => {
-  if (!nombre) return Promise.resolve(true);
+  if (!nombre || props.producto?.nombre === nombre) {
+    return Promise.resolve(true);
+  }
   if (memoriaValidaciones.has(nombre)) {
     return Promise.resolve(memoriaValidaciones.get(nombre)!);
   }
   isCheckingNombre.value = true;
   return new Promise((resolve) => {
-    clearTimeout(debounceTimer); 
+    clearTimeout(debounceTimer);
     debounceTimer = setTimeout(async () => {
       try {
         const response = await productosService.search(nombre);
@@ -34,7 +39,7 @@ const verificarNombre = (nombre: string): Promise<boolean> => {
         memoriaValidaciones.set(nombre, disponible); 
         resolve(disponible);
       } catch (error) {
-        resolve(false);
+        resolve(false); 
       } finally {
         isCheckingNombre.value = false;
       }
@@ -50,9 +55,10 @@ const onSubmit = (event: any) => {
   const data = event.values;
   const payload: Producto = {
     ...data,
+    id: props.producto.id,
     stock: data.conteo ? data.stock : undefined,
   };
-  emit('confirmCreate', payload);
+  emit('confirmEdit', payload);
   visible.value = false;
 };
 </script>
@@ -71,7 +77,7 @@ const onSubmit = (event: any) => {
             <i class="fi-sr-box"></i>
           </div>
           <div class="flex flex-col">
-            <span class="text-lg! font-bold dark:text-zinc-200">Registrar producto</span>
+            <span class="text-lg! font-bold dark:text-zinc-200">Editar producto</span>
           </div>
         </div>
         <Button
@@ -84,7 +90,8 @@ const onSubmit = (event: any) => {
       <Form
         v-slot="$form"
         :resolver="resolver"
-        :initialValues="producto"
+        :initialValues="initialValues"
+        :key="producto?.id"
         @submit="onSubmit"
         class="flex h-full flex-col overflow-hidden"
       >
@@ -231,7 +238,7 @@ const onSubmit = (event: any) => {
             severity="secondary"
           />
           <Button
-            label="Registrar"
+            label="Guardar"
             type="submit"
             size="small"
           />
