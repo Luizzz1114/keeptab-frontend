@@ -1,9 +1,13 @@
-<script setup>
+<script setup lang="ts">
 import { useConfirm } from 'primevue/useconfirm';
 
 const confirm = useConfirm();
 
-const openConfirm = (item, details) => {
+interface DeleteItem {
+  id: number | undefined;
+}
+
+const openConfirm = <T extends DeleteItem>(item: T, details: Record<string, string>) => {
   confirm.require({
     group: 'headless',
     message: details,
@@ -15,7 +19,9 @@ const openConfirm = (item, details) => {
 };
 
 defineExpose({ openConfirm });
-const emit = defineEmits(['confirmDelete']);
+const emit = defineEmits<{
+  (e: 'confirmDelete', id: number | undefined): void;
+}>();
 </script>
 
 <template>

@@ -124,7 +124,7 @@ const handleRemove = (item: CartItem) => {
           <div class="grid size-9 place-items-center rounded-lg bg-emerald-500 text-lg text-white">
             <i class="fi-sr-shopping-cart"></i>
           </div>
-          <h2 class="text-lg font-extrabold dark:text-zinc-200">Mostrardor</h2>
+          <h2 class="text-lg font-extrabold dark:text-zinc-200">Mostrador</h2>
         </div>
       </div>
       <div class="mb-4 rounded-xl border border-zinc-200 bg-zinc-50 p-4 text-xs leading-tight text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/50 dark:text-zinc-400">

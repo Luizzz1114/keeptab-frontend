@@ -6,7 +6,6 @@ import TableGrid from '@/components/Usuarios/TableGrid.vue';
 import DrawerRegister from '@/components/Usuarios/DrawerRegister.vue';
 import DrawerEdit from '@/components/Usuarios/DrawerEdit.vue';
 import DialogDelete from '@/components/ui/DialogDelete.vue';
-import usuariosService from '@/api/services/usuarios.service';
 import { useNotificaciones } from '@/componsables/useNotificaciones';
 
 // --- Configuración de la vista ---
@@ -17,11 +16,10 @@ const items = [{ label: 'Usuarios', route: '/usuarios' }];
 // --- Funciones de los Modales ---
 const isDrawerRegisterOpen = ref<boolean>(false);
 const isDrawerEditOpen = ref<boolean>(false);
-const confirmDialogRef = ref<any>(null);
+const confirmDialogRef = ref<InstanceType<typeof DialogDelete> | null>(null);
 
 const handleEditRequest = async (item: Usuario) => {
   selectedUsuario.value = item;
-  console.log(selectedUsuario.value);
   if (selectedUsuario.value) {
     isDrawerEditOpen.value = true;
   }
@@ -64,7 +62,7 @@ const update = async (usuario: Usuario) => {
     showSuccess(res.message);
     await getAll();
   } catch (error: any) {
-    console.log(error.response.data.message);
+    showError(error.response.data.message);
   }
 };
 
@@ -74,7 +72,7 @@ const remove = async (id: Usuario['id']) => {
     showSuccess(res.message);
     await getAll();
   } catch (error: any) {
-    console.log(error.response.data.message);
+    showError(error.response.data.message);
   }
 };
 

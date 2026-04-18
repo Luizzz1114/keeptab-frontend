@@ -39,6 +39,6 @@ export const getUsuarioSchema = (
 };
 
 export const roles = [
-  { label: 'Administador', value: 'ADMIN' },
+  { label: 'Administrador', value: 'ADMIN' },
   { label: 'Usuario', value: 'USER' },
 ];

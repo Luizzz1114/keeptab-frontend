@@ -6,7 +6,6 @@ import Breadcrumb from '@/components/ui/CustomBreadcrumb.vue';
 import DrawerRegister from '@/components/Productos/DrawerRegister.vue';
 import DrawerEdit from '@/components/Productos/DrawerEdit.vue';
 import DialogDelete from '@/components/ui/DialogDelete.vue';
-import productosService from '@/api/services/productos.service';
 import { useNotificaciones } from '@/componsables/useNotificaciones';
 import { formatearMonto } from '@/utils/formatters';
 
@@ -18,7 +17,7 @@ const items = [{ label: 'Productos', route: '/productos' }];
 // --- Funciones de los Modales ---
 const isDrawerRegisterOpen = ref<boolean>(false);
 const isDrawerEditOpen = ref<boolean>(false);
-const confirmDialogRef = ref<any>(null);
+const confirmDialogRef = ref<InstanceType<typeof DialogDelete> | null>(null);
 
 const handleEditRequest = async (item: Producto) => {
   selectedProducto.value = item;
@@ -72,7 +71,7 @@ const update = async (producto: Producto) => {
     showSuccess(res.message);
     await getAll();
   } catch (error: any) {
-    console.log(error.response.data.message);
+    showError(error.response.data.message);
   }
 };
 
@@ -82,7 +81,7 @@ const remove = async (id: Producto['id']) => {
     showSuccess(res.message);
     await getAll();
   } catch (error: any) {
-    console.log(error.response.data.message);
+    showError(error.response.data.message);
   }
 };
 

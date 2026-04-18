@@ -17,11 +17,10 @@ const items = [{ label: 'Cuentas claras', route: '/cuentas' }];
 // --- Funciones de los Modales ---
 const isDrawerRegisterOpen = ref<boolean>(false);
 const isDrawerEditOpen = ref<boolean>(false);
-const confirmDialogRef = ref<any>(null);
+const confirmDialogRef = ref<InstanceType<typeof DialogDelete> | null>(null);
 
 const handleEditRequest = async (item: Cliente) => {
   selectedCliente.value = item;
-  console.log(selectedCliente.value);
   if (selectedCliente.value) {
     isDrawerEditOpen.value = true;
   }
@@ -70,7 +69,7 @@ const update = async (cliente: Cliente) => {
     showSuccess(res.message);
     await getAll();
   } catch (error: any) {
-    console.log(error.response.data.message);
+    showError(error.response.data.message);
   }
 };
 
@@ -80,7 +79,7 @@ const remove = async (id: Cliente['id']) => {
     showSuccess(res.message);
     await getAll();
   } catch (error: any) {
-    console.log(error.response.data.message);
+    showError(error.response.data.message);
   }
 };
 
