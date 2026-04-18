@@ -68,11 +68,17 @@ span::after {
   padding: 0 !important;
 }
 
-/* --- DATATABLE --- */
-.p-datatable-table {
-  min-width: 50rem;
+.p-togglebutton {
+  background-color: var(--color-zinc-100) !important;
+  border: 1px solid var(--color-zinc-100) !important;
 }
 
+.p-message-text,
+.p-message-sm {
+  font-size: 0.75rem !important;
+}
+
+/* --- DATATABLE --- */
 .p-datatable-column-title {
   white-space: nowrap !important;
   font-weight: bolder !important;
@@ -80,10 +86,6 @@ span::after {
 
 .p-datatable-header-cell {
   background-color: var(--color-zinc-50) !important;
-}
-
-.p-datatable-tbody > tr > td {
-  padding: 0.45rem 1rem !important;
 }
 
 .p-datatable-tbody > tr:last-child > td {
@@ -105,6 +107,34 @@ span::after {
   background-color: transparent !important;
 }
 
+/* --- TOAST Y MENSAJES (NOTIFICACIONES) --- */
+.p-toast {
+  max-width: 80% !important;
+}
+
+.p-toast-message-text {
+  gap: 0.1rem !important;
+}
+
+.p-toast-summary {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+}
+
+.p-toast-detail {
+  font-size: 0.8rem !important;
+  font-weight: 400 !important;
+}
+
+.p-toast-message-icon {
+  margin-top: 3px;
+}
+
+.p-message-text {
+  font-size: 0.75rem !important;
+  font-weight: 400 !important;
+}
+
 /* --- MODO OSCURO (DARK MODE) --- */
 .dark .p-datatable-header-cell {
   background-color: color-mix(in srgb, var(--color-zinc-950) 50%, transparent) !important;
@@ -114,4 +144,9 @@ span::after {
 .dark .menu-item-danger .p-menu-item-link:hover,
 .dark .menu-item-danger.p-focus .p-menu-item-link {
   background-color: rgba(182, 39, 39, 0.164) !important;
+}
+
+.dark .p-togglebutton {
+  background-color: var(--color-zinc-950) !important;
+  border: 1px solid var(--color-zinc-950) !important;
 }
