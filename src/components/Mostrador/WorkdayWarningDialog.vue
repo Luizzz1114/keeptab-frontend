@@ -1,10 +1,13 @@
 <script setup lang="ts">
 const visible = defineModel<boolean>('visible');
-const emit = defineEmits(['confirmCreate']);
 </script>
 
 <template>
-  <Dialog v-model:visible="visible" modal class="w-11/12 max-w-102 overflow-hidden rounded-2xl!">
+  <Dialog
+    v-model:visible="visible"
+    modal
+    class="w-11/12 max-w-102 overflow-hidden rounded-2xl!"
+  >
     <template #container>
       <div class="relative flex flex-col items-center justify-between p-6 dark:border-zinc-700">
         <div class="flex w-full flex-col items-center justify-center gap-2">
@@ -22,7 +25,15 @@ const emit = defineEmits(['confirmCreate']);
         </div>
       </div>
       <div class="flex w-full items-center justify-center p-6 pt-0">
-        <Button as="router-link" to="/jornadas" label="Ir a abrir jornada" severity="danger" type="submit" size="small" class="min-w-18" />
+        <Button
+          as="router-link"
+          to="/jornadas"
+          label="Ir a abrir jornada"
+          severity="danger"
+          type="submit"
+          size="small"
+          class="min-w-18"
+        />
       </div>
     </template>
   </Dialog>

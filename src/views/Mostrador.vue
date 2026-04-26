@@ -1,33 +1,33 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
+import type { JornadaActual } from '@/types/jornadas.types';
+import type { Venta } from '@/types/ventas.types';
 import type { Cliente } from '@/types/clientes.types';
 import type { Producto, CartItem } from '@/types/productos.types';
 import Breadcrumb from '@/components/ui/CustomBreadcrumb.vue';
-import GridProductos from '@/components/Mostrador/GridProductos.vue';
+import ProductsDataGrid from '@/components/Mostrador/ProductsDataGrid.vue';
+import Cart from '@/components/Mostrador/Cart.vue';
+import WorkdayWarningDialog from '@/components/Mostrador/WorkdayWarningDialog.vue';
 import productosService from '@/api/services/productos.service';
-import { useNotificaciones } from '@/componsables/useNotificaciones';
-import Carrito from '@/components/Mostrador/Carrito.vue';
 import clientesService from '@/api/services/clientes.service';
 import ventasService from '@/api/services/ventas.service';
-import type { Venta } from '@/types/ventas.types';
 import jornadasService from '@/api/services/jornadas.service';
-import type { JornadaActual } from '@/types/jornadas.types';
-import ErrorJornadaDialog from '@/components/Jornadas/ErrorJornadaDialog.vue';
+import { useNotifications } from '@/componsables/useNotificaciones';
 
 // --- Configuración de la vista ---
-const { showSuccess, showError, showWarning } = useNotificaciones();
+const { showSuccess, showError, showWarning } = useNotifications();
 
 // --- Operaciones con la API ---
-const productos = ref<Producto[]>([]);
-const clientes = ref<Cliente[]>([]);
-const jornada = ref<JornadaActual>();
+const products = ref<Producto[]>([]);
+const clients = ref<Cliente[]>([]);
+const workday = ref<JornadaActual>();
 const cart = ref<CartItem[]>([]);
-const mostrarAdvertencia = ref<boolean>(false);
+const isWarningVisible = ref<boolean>(false);
 
 const getProductos = async () => {
   try {
     const res = await productosService.getAll();
-    productos.value = res.data;
+    products.value = res.data;
   } catch (error: any) {
     showError(error.response.data.message);
   }
@@ -36,7 +36,7 @@ const getProductos = async () => {
 const getClientes = async () => {
   try {
     const res = await clientesService.getAll();
-    clientes.value = res.data;
+    clients.value = res.data;
   } catch (error: any) {
     showError(error.response.data.message);
   }
@@ -45,11 +45,11 @@ const getClientes = async () => {
 const getJornadaActual = async () => {
   try {
     const res = await jornadasService.getActual();
-    jornada.value = res.data;
+    workday.value = res.data;
   } catch (error: any) {
     if (error.response.status === 404) {
-      mostrarAdvertencia.value = true;
-      return showWarning(error.response.data.message);
+      isWarningVisible.value = true;
+      return;
     }
     showError(error.response.data.message);
   }
@@ -70,7 +70,7 @@ onMounted(async () => {
   await Promise.allSettled([getJornadaActual(), getClientes(), getProductos()]);
 });
 
-// --- Lógica del Carrito ---
+// --- Lógica del Cart ---
 const handleAddToCart = (producto: Producto) => {
   const existingItem = cart.value.find((item) => item.producto.id === producto.id);
   if (existingItem) {
@@ -116,25 +116,37 @@ const handleRemove = (item: CartItem) => {
 </script>
 
 <template>
-  <div class="flex md:h-full md:gap-4">
-    <div class="flex flex-1 flex-col">
+  <div class="flex h-full flex-col gap-4">
+    <div class="flex flex-col">
       <Breadcrumb />
-      <div class="my-4 flex flex-wrap justify-between gap-4">
-        <div class="flex items-center gap-3">
-          <div class="grid size-9 place-items-center rounded-lg bg-emerald-500 text-lg text-white">
-            <i class="fi-sr-shopping-cart"></i>
-          </div>
-          <h2 class="text-lg font-extrabold dark:text-zinc-200">Mostrardor</h2>
+      <div class="mt-4 flex items-center gap-3">
+        <div class="grid size-9 place-items-center rounded-lg bg-emerald-500 text-lg text-white">
+          <i class="fi-sr-shopping-cart"></i>
         </div>
+        <h2 class="text-lg font-extrabold dark:text-zinc-200">Mostrador</h2>
       </div>
-      <div class="mb-4 rounded-xl border border-zinc-200 bg-zinc-50 p-4 text-xs leading-tight text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/50 dark:text-zinc-400">
-        <span>Haz clic en los productos que el cliente desea llevar para armar la cuenta.</span>
+    </div>
+    <div class="flex flex-1 flex-col gap-4 lg:flex-row">
+      <div class="flex flex-1 flex-col gap-4">
+        <div class="rounded-xl border border-zinc-200 bg-zinc-50 p-4 text-xs leading-tight text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/50 dark:text-zinc-400">
+          <span>Haz clic en los productos que el cliente desea llevar para armar la cuenta.</span>
+        </div>
+        <ProductsDataGrid
+          :data="products"
+          @add-to-cart="handleAddToCart"
+        />
       </div>
-      <GridProductos :data="productos" @add-to-cart="handleAddToCart" />
+      <div class="w-full shrink-0 lg:w-100">
+        <Cart
+          :clients="clients"
+          :cart="cart"
+          @increase-qty="handleIncrease"
+          @decrease-qty="handleDecrease"
+          @remove-item="handleRemove"
+          @confirm-venta="createVenta"
+        />
+      </div>
     </div>
-    <div class="h-full md:min-w-100">
-      <Carrito :clientes="clientes" :cart="cart" @increase-qty="handleIncrease" @decrease-qty="handleDecrease" @remove-item="handleRemove" @confirm-venta="createVenta" />
-    </div>
-    <ErrorJornadaDialog v-model:visible="mostrarAdvertencia" />
+    <WorkdayWarningDialog v-model:visible="isWarningVisible" />
   </div>
 </template>

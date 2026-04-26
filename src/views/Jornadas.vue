@@ -1,17 +1,25 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import type { Jornada, JornadaActual } from '@/types/jornadas.types';
+import type { Venta } from '@/types/ventas.types';
 import Breadcrumb from '@/components/ui/CustomBreadcrumb.vue';
 import CustomCard from '@/components/ui/CustomCard.vue';
-import AbrirJornadaDialog from '@/components/Jornadas/AbrirJornadaDialog.vue';
-import CerrarJornadaDialog from '@/components/Jornadas/CerrarJornadaDialog.vue';
-import jornadasService from '@/api/services/jornadas.service';
-import { useNotificaciones } from '@/componsables/useNotificaciones';
-import { formatearMonto, formatTinyDate } from '@/utils/formatters';
+import SalesDataList from '@/components/Jornadas/SalesDataList.vue';
+import WorkdayOpenDialog from '@/components/Jornadas/WorkdayOpenDialog.vue';
+import WorkdayCloseDialog from '@/components/Jornadas/WorkdayCloseDialog.vue';
 import DialogDelete from '@/components/ui/DialogDelete.vue';
 
+import jornadasService from '@/api/services/jornadas.service';
+
+import { useNotifications } from '@/componsables/useNotificaciones';
+import { formatCurrency, formatTinyDate } from '@/utils/formatters';
+
+import ventasService from '@/api/services/ventas.service';
+
+import SaleDetailsDrawer from '@/components/Jornadas/SaleDetailsDrawer.vue';
+
 // --- Configuración de la vista ---
-const { showSuccess, showError, showWarning } = useNotificaciones();
+const { showSuccess, showError } = useNotifications();
 
 const items = [{ label: 'Jornadas', route: '/jornadas' }];
 
@@ -19,19 +27,49 @@ const items = [{ label: 'Jornadas', route: '/jornadas' }];
 const isDialogRegisterOpen = ref<boolean>(false);
 const isDialogEditOpen = ref<boolean>(false);
 const confirmDialogRef = ref<any>(null);
+const removeType = ref<'jornada' | 'venta' | null>(null);
 
-const handleDeleteRequest = (item: JornadaActual) => {
+const handleDeleteWorkdayRequest = (item: JornadaActual) => {
+  removeType.value = 'jornada';
   const info = {
     Apertura: formatTinyDate(item?.abierta_desde),
-    'Fondo inicial': `${formatearMonto(item.fondo_inicial || 0)} Bs`,
-    'Ventas en efectivo': `${formatearMonto(item.ventas_efectivo || 0)} Bs`,
-    'Total esperado': `${formatearMonto(item.total_esperado || 0)} Bs`,
+    'Fondo inicial': formatCurrency(item.fondo_inicial),
+    'Ventas en efectivo': formatCurrency(item.ventas_efectivo || 0),
+    'Total esperado': formatCurrency(item.total_esperado || 0),
   };
   confirmDialogRef.value.openConfirm(item, info);
 };
 
+const handleDeleteSaleRequest = (item: Venta) => {
+  removeType.value = 'venta';
+  const info = {
+    'Hora de la venta': formatTinyDate(item?.created_at),
+    Total: formatCurrency(item.total || 0),
+    Estatus: item.estatus === 'PAGADA' ? 'Pagada' : 'A crédito',
+  };
+  confirmDialogRef.value.openConfirm(item, info);
+};
+
+const handleConfirmDelete = async (id: number) => {
+  if (removeType.value === 'jornada') {
+    await remove(id);
+  } else if (removeType.value === 'venta') {
+    await removeVenta(id);
+  }
+};
+
+const isSaleDatailsDrawerOpen = ref(false);
+const selectedSale = ref<Venta | null>(null);
+
+const handleView = async (venta: Venta) => {
+  selectedSale.value = await getVenta(venta.id);
+  if (selectedSale.value) {
+    isSaleDatailsDrawerOpen.value = true;
+  }
+};
+
 // --- Operaciones con la API ---
-const jornadaActual = ref<JornadaActual>({});
+const workday = ref<JornadaActual | null>(null);
 
 const create = async (jornada: Jornada) => {
   try {
@@ -45,13 +83,10 @@ const create = async (jornada: Jornada) => {
 
 const getActual = async () => {
   try {
-    const res = await jornadasService.getActual();
-    jornadaActual.value = res.data;
+    const res = await jornadasService.getActual() || null;
+    workday.value = res.data;
   } catch (error: any) {
-    jornadaActual.value = {};
-    if (error.response.status === 404) {
-      return;
-    }
+    if (error.response.status === 404) return;
     showError(error.response.data.message);
   }
 };
@@ -60,15 +95,36 @@ const update = async (jornada: Jornada) => {
   try {
     const res = await jornadasService.update(jornada);
     showSuccess(res.message);
-    await getActual();
   } catch (error: any) {
     showError(error.response.data.message);
+  } finally {
+    await getActual();
   }
 };
 
 const remove = async (id: Jornada['id']) => {
   try {
     const res = await jornadasService.remove(id);
+    showSuccess(res.message);
+    await getActual();
+  } catch (error: any) {
+    showError(error.response.data.message);
+  }
+};
+
+// --- Ventas ---
+const getVenta = async (id: Venta['id']) => {
+  try {
+    const res = await ventasService.getById(id);
+    return res.data;
+  } catch (error: any) {
+    showError(error.response.data.message);
+  }
+};
+
+const removeVenta = async (id: Venta['id']) => {
+  try {
+    const res = await ventasService.remove(id);
     showSuccess(res.message);
     await getActual();
   } catch (error: any) {
@@ -87,12 +143,14 @@ onMounted(async () => {
     <div class="mt-4 mb-4 flex flex-wrap justify-between gap-4">
       <div class="flex items-center gap-3">
         <div class="grid size-9 place-items-center rounded-lg bg-emerald-500 text-lg text-white">
-          <i class="fi-sr-calculator"></i>
+          <i class="fi-sr-calendar"></i>
         </div>
         <h2 class="text-lg font-extrabold dark:text-zinc-200">Jornada en curso</h2>
       </div>
       <div class="flex items-center gap-3">
         <Button
+          as="router-link"
+          to="/jornadas/historial"
           label="Historial"
           icon="fi-br-time-forward"
           severity="secondary"
@@ -101,7 +159,7 @@ onMounted(async () => {
           class="flex! h-9! items-center! shadow-xs!"
         />
         <Button
-          v-if="!jornadaActual?.id"
+          v-if="!workday?.id"
           @click="isDialogRegisterOpen = true"
           label="Abrir jornada"
           icon="fi-br-calendar-arrow-up"
@@ -113,7 +171,7 @@ onMounted(async () => {
           class="flex items-center gap-3"
         >
           <Button
-            @click="handleDeleteRequest(jornadaActual)"
+            @click="handleDeleteWorkdayRequest(workday)"
             icon="fi-br-trash"
             outlined
             size="small"
@@ -130,39 +188,50 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-    <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+    <div class="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
       <CustomCard
         variant="success"
         title="Ventas de hoy"
-        :value="jornadaActual.id ? `${formatearMonto(jornadaActual.ventas_efectivo || 0)} Bs` : '-'"
+        :value="workday?.id ? formatCurrency(workday?.ventas_efectivo || 0) : '-'"
         subtitle="Total acumulado en el mostrador"
         icon="fi-br-arrow-trend-up"
       />
       <CustomCard
         title="Total físico esperado"
-        :value="jornadaActual.id ? `${formatearMonto(jornadaActual.total_esperado || 0)} Bs` : '-'"
+        :value="workday?.id ? formatCurrency(workday?.total_esperado || 0) : '-'"
         subtitle="Fondo inicial + Ventas"
         icon="fi-rr-calculator"
       />
       <CustomCard
         title="Abierta desde"
-        :value="formatTinyDate(jornadaActual?.abierta_desde || null)"
+        :value="formatTinyDate(workday?.abierta_desde || null)"
         subtitle="Hora de apertura"
         icon="fi-br-clock"
       />
     </div>
-    <AbrirJornadaDialog
+    <SalesDataList
+      :ventas="workday?.ventas"
+      @view="handleView"
+      @delete="handleDeleteSaleRequest"
+    />
+  </div>
+  <div>
+    <SaleDetailsDrawer
+      v-model:visible="isSaleDatailsDrawerOpen"
+      :venta="selectedSale"
+    />
+    <WorkdayOpenDialog
       v-model:visible="isDialogRegisterOpen"
       @confirm-create="create"
     />
-    <CerrarJornadaDialog
+    <WorkdayCloseDialog
       v-model:visible="isDialogEditOpen"
-      :jornada-id="jornadaActual?.id"
+      :jornada-id="workday?.id"
       @confirm-edit="update"
     />
     <DialogDelete
       ref="confirmDialogRef"
-      @confirm-delete="remove"
+      @confirm-delete="handleConfirmDelete"
     />
   </div>
 </template>
