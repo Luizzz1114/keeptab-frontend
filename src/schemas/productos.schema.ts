@@ -31,7 +31,7 @@ export const getProductoSchema = (
   });
 }
 
-export const categoriasProductos: string[] = [
+export const productCategories: string[] = [
   'Comestibles', 
   'Artículos de limpieza', 
   'Bebidas', 
@@ -42,7 +42,7 @@ export const categoriasProductos: string[] = [
   'Otros'
 ];
 
-export const iconosPorCategoria: { [key: string]: string } = {
+export const iconsByCategory: { [key: string]: string } = {
   'Comestibles': 'fi-rr-restaurant',
   'Artículos de limpieza': 'fi-rr-broom',
   'Bebidas': 'fi-rr-drink-alt',
@@ -53,7 +53,7 @@ export const iconosPorCategoria: { [key: string]: string } = {
   'Otros': 'fi-rr-apps'
 };
 
-export const conteoOpciones = [
+export const countingOptions = [
   { label: 'Si', value: true },
   { label: 'No', value: false },
 ];

@@ -7,7 +7,7 @@ export interface Producto {
   precio: number;
 }
 
-export interface CartItem { 
-  producto: Producto; 
-  cantidad: number; 
+export interface CartItem {
+  producto: Producto;
+  cantidad: number;
 }

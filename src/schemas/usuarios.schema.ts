@@ -8,7 +8,7 @@ const contrasenaBaseSchema = z.string({ message: 'La contraseña es obligatoria'
 
 export const getUsuarioSchema = (
   isEdit: boolean = false,
-  validarUsername: (username: string) => Promise<boolean>
+  checkUsernameAvailability: (username: string) => Promise<boolean>
 ) => {
   return z.object({
     rol: z.string({ message: 'Seleccione un rol' }).trim()
@@ -17,7 +17,7 @@ export const getUsuarioSchema = (
     username: z.string({ message: 'El nombre de usuario es obligatorio' }).trim()
       .min(3, 'El nombre de usuario debe tener mínimo 3 caracteres')
       .max(20, 'El nombre de usuario debe tener máximo 20 caracteres')
-      .refine(validarUsername, { message: 'Este nombre de usuario ya está en uso' }),
+      .refine(checkUsernameAvailability, { message: 'Este nombre de usuario ya está en uso' }),
     
     password: isEdit 
       ? z.union([contrasenaBaseSchema, z.literal(''), z.undefined()]) 
@@ -39,6 +39,6 @@ export const getUsuarioSchema = (
 };
 
 export const roles = [
-  { label: 'Administador', value: 'ADMIN' },
+  { label: 'Administrador', value: 'ADMIN' },
   { label: 'Usuario', value: 'USER' },
 ];
