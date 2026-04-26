@@ -1,6 +1,6 @@
 import { useToast } from 'primevue/usetoast';
 
-export function useNotificaciones() {
+export function useNotifications() {
   const toast = useToast();
 
   const showSuccess = (message = 'Operación realizada correctamente') => {
