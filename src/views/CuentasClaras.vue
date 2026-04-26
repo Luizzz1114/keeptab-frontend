@@ -1,27 +1,38 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import type { Cliente } from '@/types/clientes.types';
+import type { Abono } from '@/types/abonos.types';
 import Breadcrumb from '@/components/ui/CustomBreadcrumb.vue';
-import TableGrid from '@/components/Clientes/TableGrid.vue';
-import DrawerRegister from '@/components/Clientes/DrawerRegister.vue';
-import DrawerEdit from '@/components/Clientes/DrawerEdit.vue';
+import ClientsDataView from '@/components/Clientes/ClientsDataView.vue';
+import ClientCreateDrawer from '@/components/Clientes/ClientCreateDrawer.vue';
+import ClientDetailsDrawer from '@/components/Clientes/ClientDetailsDrawer.vue';
+import ClientEditDrawer from '@/components/Clientes/ClientEditDrawer.vue';
 import DialogDelete from '@/components/ui/DialogDelete.vue';
 import clientesService from '@/api/services/clientes.service';
-import { useNotificaciones } from '@/componsables/useNotificaciones';
+import abonosService from '@/api/services/abonos.service';
+import { useNotifications } from '@/componsables/useNotificaciones';
+import type { Venta } from '@/types/ventas.types';
 
 // --- Configuración de la vista ---
-const { showSuccess, showError } = useNotificaciones();
+const { showSuccess, showError } = useNotifications();
 
 const items = [{ label: 'Cuentas claras', route: '/cuentas' }];
 
 // --- Funciones de los Modales ---
+const isDrawerOpen = ref<boolean>(false);
 const isDrawerRegisterOpen = ref<boolean>(false);
 const isDrawerEditOpen = ref<boolean>(false);
 const confirmDialogRef = ref<any>(null);
 
+const handleViewRequest = async (item: Cliente) => {
+  selectedCliente.value = await getById(item.id);
+  if (selectedCliente.value) {
+    isDrawerOpen.value = true;
+  }
+};
+
 const handleEditRequest = async (item: Cliente) => {
   selectedCliente.value = item;
-  console.log(selectedCliente.value);
   if (selectedCliente.value) {
     isDrawerEditOpen.value = true;
   }
@@ -31,23 +42,28 @@ const handleDeleteRequest = (item: Cliente) => {
   const info = {
     Nombre: item.nombre,
     Cédula: item.cedula,
-    Contacto: item.contacto,
+    Contacto: item.contacto || 'N/A',
   };
   confirmDialogRef.value.openConfirm(item, info);
 };
 
 // --- Operaciones con la API ---
 const clientes = ref<Cliente[]>([]);
-const selectedCliente = ref<Cliente>({
-  id: undefined,
-  nombre: '',
-  cedula: '',
-  contacto: '',
-});
+const selectedCliente = ref<any>(null);
 
 const create = async (cliente: Cliente) => {
   try {
     const res = await clientesService.create(cliente);
+    showSuccess(res.message);
+    await getAll();
+  } catch (error: any) {
+    showError(error.response.data.message);
+  }
+};
+
+const RegistrarAbono = async (abono: Abono) => {
+  try {
+    const res = await abonosService.create(abono);
     showSuccess(res.message);
     await getAll();
   } catch (error: any) {
@@ -64,13 +80,22 @@ const getAll = async () => {
   }
 };
 
+const getById = async (id: Cliente['id']) => {
+  try {
+    const res = await clientesService.getById(id);
+    return res.data;
+  } catch (error: any) {
+    showError(error.response.data.message);
+  }
+};
+
 const update = async (cliente: Cliente) => {
   try {
     const res = await clientesService.update(cliente);
     showSuccess(res.message);
     await getAll();
   } catch (error: any) {
-    console.log(error.response.data.message);
+    showError(error.response.data.message);
   }
 };
 
@@ -80,13 +105,25 @@ const remove = async (id: Cliente['id']) => {
     showSuccess(res.message);
     await getAll();
   } catch (error: any) {
-    console.log(error.response.data.message);
+    showError(error.response.data.message);
   }
 };
 
 onMounted(async () => {
   await getAll();
 });
+
+// --- Cálculos ---
+const calcularRestante = (venta: Venta) => {
+  const total = venta.total || 0;
+  const abonado = venta.abonos?.reduce((acc, abono) => acc + (Number(abono.monto) || 0), 0) || 0;
+  return total - abonado;
+};
+
+const deudaTotal = (cliente: Cliente) => {
+  if (!cliente?.ventas) return 0;
+  return cliente.ventas.filter((v) => v.estatus === 'FIADA').reduce((acc, venta) => acc + calcularRestante(venta), 0);
+};
 </script>
 
 <template>
@@ -107,16 +144,22 @@ onMounted(async () => {
         class="flex! h-9! items-center! shadow-xs!"
       />
     </div>
-    <TableGrid
+    <ClientsDataView
       :data="clientes"
+      @view="handleViewRequest"
       @edit="handleEditRequest"
       @delete="handleDeleteRequest"
     />
-    <DrawerRegister
+    <ClientDetailsDrawer
+      v-model:visible="isDrawerOpen"
+      :cliente="selectedCliente"
+      @registrar-abono="RegistrarAbono"
+    />
+    <ClientCreateDrawer
       v-model:visible="isDrawerRegisterOpen"
       @confirm-create="create"
     />
-    <DrawerEdit
+    <ClientEditDrawer
       v-model:visible="isDrawerEditOpen"
       :cliente="selectedCliente"
       @confirm-edit="update"
