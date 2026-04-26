@@ -6,7 +6,7 @@ import { getUsuarioSchema, roles } from '@/schemas/usuarios.schema';
 import usuariosService from '@/api/services/usuarios.service';
 
 const visible = defineModel<boolean>('visible');
-const emit = defineEmits(['confirmEdit']);
+const emit = defineEmits<{ (e: 'confirmEdit', payload: Usuario): void }>();
 const props = defineProps<{ usuario: Usuario | null }>();
 
 const initialValues = computed(() => {
@@ -16,15 +16,15 @@ const initialValues = computed(() => {
 });
 
 const isCheckingUsername = ref(false);
-const memoriaValidaciones = new Map<string, boolean>();
+const confirmEdit = new Map<string, boolean>();
 let debounceTimer: ReturnType<typeof setTimeout>;
 
-const verificarUsername = (username: string): Promise<boolean> => {
+const checkUsernameAvailability = (username: string): Promise<boolean> => {
   if (!username || props.usuario?.username === username) {
     return Promise.resolve(true);
   }
-  if (memoriaValidaciones.has(username)) {
-    return Promise.resolve(memoriaValidaciones.get(username)!);
+  if (confirmEdit.has(username)) {
+    return Promise.resolve(confirmEdit.get(username)!);
   }
   isCheckingUsername.value = true;
   return new Promise((resolve) => {
@@ -33,7 +33,7 @@ const verificarUsername = (username: string): Promise<boolean> => {
       try {
         const response = await usuariosService.search(username);
         const disponible = response.data.length === 0;
-        memoriaValidaciones.set(username, disponible); 
+        confirmEdit.set(username, disponible); 
         resolve(disponible);
       } catch (error) {
         resolve(false); 
@@ -44,8 +44,8 @@ const verificarUsername = (username: string): Promise<boolean> => {
   });
 };
 
-const usuarioSchema = getUsuarioSchema(true, verificarUsername);
-const resolver = ref(zodResolver(usuarioSchema));
+const usuarioSchema = getUsuarioSchema(true, checkUsernameAvailability);
+const resolver = zodResolver(usuarioSchema);
 
 const onSubmit = (event: any) => {
   if (!event.valid) return;

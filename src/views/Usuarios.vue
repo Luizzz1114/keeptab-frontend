@@ -2,15 +2,15 @@
 import { onMounted, ref } from 'vue';
 import type { Usuario } from '@/types/usuarios.types';
 import Breadcrumb from '@/components/ui/CustomBreadcrumb.vue';
-import TableGrid from '@/components/Usuarios/TableGrid.vue';
-import DrawerRegister from '@/components/Usuarios/DrawerRegister.vue';
-import DrawerEdit from '@/components/Usuarios/DrawerEdit.vue';
+import UsersDataView from '@/components/Usuarios/UsersDataView.vue';
+import UserCreateDrawer from '@/components/Usuarios/UserCreateDrawer.vue';
+import UserEditDrawer from '@/components/Usuarios/UserEditDrawer.vue';
 import DialogDelete from '@/components/ui/DialogDelete.vue';
 import usuariosService from '@/api/services/usuarios.service';
-import { useNotificaciones } from '@/componsables/useNotificaciones';
+import { useNotifications } from '@/componsables/useNotificaciones';
 
 // --- Configuración de la vista ---
-const { showSuccess, showError } = useNotificaciones();
+const { showSuccess, showError } = useNotifications();
 
 const items = [{ label: 'Usuarios', route: '/usuarios' }];
 
@@ -20,9 +20,8 @@ const isDrawerEditOpen = ref<boolean>(false);
 const confirmDialogRef = ref<any>(null);
 
 const handleEditRequest = async (item: Usuario) => {
-  selectedUsuario.value = item;
-  console.log(selectedUsuario.value);
-  if (selectedUsuario.value) {
+  selectedUser.value = item;
+  if (selectedUser.value) {
     isDrawerEditOpen.value = true;
   }
 };
@@ -36,8 +35,8 @@ const handleDeleteRequest = (item: Usuario) => {
 };
 
 // --- Operaciones con la API ---
-const usuarios = ref<Usuario[]>([]);
-const selectedUsuario = ref<Usuario | null>(null);
+const users = ref<Usuario[]>([]);
+const selectedUser = ref<Usuario | null>(null);
 
 const create = async (usuario: Usuario) => {
   try {
@@ -52,7 +51,7 @@ const create = async (usuario: Usuario) => {
 const getAll = async () => {
   try {
     const res = await usuariosService.getAll();
-    usuarios.value = res.data;
+    users.value = res.data;
   } catch (error: any) {
     showError(error.response.data.message);
   }
@@ -64,7 +63,7 @@ const update = async (usuario: Usuario) => {
     showSuccess(res.message);
     await getAll();
   } catch (error: any) {
-    console.log(error.response.data.message);
+    showError(error.response.data.message);
   }
 };
 
@@ -74,7 +73,7 @@ const remove = async (id: Usuario['id']) => {
     showSuccess(res.message);
     await getAll();
   } catch (error: any) {
-    console.log(error.response.data.message);
+    showError(error.response.data.message);
   }
 };
 
@@ -101,23 +100,23 @@ onMounted(async () => {
         class="flex! h-9! items-center! shadow-xs!"
       />
     </div>
-    <TableGrid
-      :data="usuarios"
+    <UsersDataView
+      :data="users"
       @edit="handleEditRequest"
       @delete="handleDeleteRequest"
     />
-
-    <DrawerRegister
+    <UserCreateDrawer
       v-model:visible="isDrawerRegisterOpen"
       @confirm-create="create"
     />
-    <DrawerEdit
+    <UserEditDrawer
       v-model:visible="isDrawerEditOpen"
-      :usuario="selectedUsuario"
+      :usuario="selectedUser"
       @confirm-edit="update"
     />
     <DialogDelete
       ref="confirmDialogRef"
+      label="usuario"
       @confirm-delete="remove"
     />
   </div>

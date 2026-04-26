@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import type { Usuario } from '@/types/usuarios.types';
 import type { LayoutType } from '@/types/ui.types';
+import { formatTinyDate } from '@/utils/formatters';
 
 // --- 1. Props y Emits ---
 const props = defineProps<{ data?: Usuario[] }>();
@@ -17,23 +18,13 @@ const searchQuery = ref<string>('');
 const menu = ref<any>(null);
 const selectedItem = ref<Usuario | null>(null);
 
-// --- 3. Datos Auxiliares ---
-// Define los iconos dependiendo del rol del usuario (ajusta los roles según tu backend)
-const iconosPorRol: Record<string, string> = {
-  Admin: 'fi-rr-shield-check',
-  Moderador: 'fi-rr-eye',
-  Usuario: 'fi-rr-user',
-  Otros: 'fi-rr-users',
-};
-
-// --- 4. Propiedades Computadas ---
+// --- 3. Propiedades Computadas ---
 const filteredData = computed(() => {
   if (!searchQuery.value || !props.data) return props.data;
   const query = searchQuery.value.toLowerCase();
-  // Añadimos campos lógicos para la búsqueda de usuarios (ajusta según tu interfaz Usuario)
-  const camposDeBusqueda: (keyof Usuario)[] = ['username', 'rol'];
+  const searchFields: (keyof Usuario)[] = ['username', 'rol'];
   return props.data.filter((item) =>
-    camposDeBusqueda.some((campo) =>
+    searchFields.some((campo) =>
       String(item[campo] || '')
         .toLowerCase()
         .includes(query),
@@ -56,7 +47,7 @@ const menuOptions = computed(() => [
   },
 ]);
 
-// --- 5. Métodos ---
+// --- 4. Métodos ---
 const toggleMenu = (event: Event, item: Usuario) => {
   selectedItem.value = item;
   menu.value?.toggle(event);
@@ -137,9 +128,10 @@ const toggleMenu = (event: Event, item: Usuario) => {
       <template #empty>
         <div class="gap-2 bg-white p-2 dark:bg-zinc-900">
           <div
-            class="flex h-24 flex-col items-center justify-center gap-2 rounded-2xl border border-zinc-200 bg-zinc-50 p-3 text-center font-medium text-zinc-400 shadow-xs ring-2 ring-white ring-inset dark:border-zinc-700 dark:bg-zinc-800/65 dark:text-zinc-500 dark:ring-zinc-900/65"
+            class="flex h-24 flex-col items-center justify-center gap-1.5 rounded-2xl border border-zinc-200 bg-zinc-50 p-3 text-center font-medium text-zinc-400 shadow-xs ring-2 ring-white ring-inset dark:border-zinc-700 dark:bg-zinc-800/65 dark:text-zinc-500 dark:ring-zinc-900/65"
           >
-            <span>No se encontraron registros</span>
+            <i class="fi-rr-user text-xl"></i>
+            <span>No se encontraron usuarios</span>
           </div>
         </div>
       </template>
@@ -216,7 +208,6 @@ const toggleMenu = (event: Event, item: Usuario) => {
                 class="size-7!"
               />
             </div>
-            <Divider class="my-1!" />
             <div class="flex items-center justify-between whitespace-nowrap">
               <div class="flex flex-col gap-1">
                 <span class="text-xs! font-bold text-zinc-500 dark:text-zinc-400">Rol</span>
