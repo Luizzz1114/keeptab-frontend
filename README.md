@@ -33,7 +33,7 @@
 - **Abonos** — registro y gestión de pagos parciales para ventas a crédito
 - **Jornadas** — control de turnos y jornadas de trabajo
 - **Gestión de Usuarios** — administración de cuentas de acceso al sistema
-- **Cuentas Claras** — módulo de cuentas claras para gestión de cuentas
+- **Cuentas Claras** — módulo de cuentas claras para gestión de clientes y deudas
 - **Diseño Responsivo** — interfaz adaptativa para desktop y dispositivos móviles
 - **UI con PrimeVue** — componentes UI modernos y profesionales
 
@@ -58,21 +58,21 @@
 El frontend sigue una arquitectura basada en **Vistas/Componentes** con separación clara entre lógica de presentación y estado.
 
 ```text
-keeptab-frontend/        # Frontend — Vue 3 + PrimeVue + TailwindCSS
+keeptab-frontend/          # Frontend — Vue 3 + PrimeVue + TailwindCSS
 
 ├── src/
 │   ├── api/               # Configuración y servicios de API
 │   ├── assets/            # Recursos estáticos
 │   ├── components/        # Componentes reutilizables
-│   ├── compsables/       # Composables de Vue
-│   ├── plugins/          # Plugins de Vue
-│   ├── router/          # Configuración de rutas
-│   ├── schemas/          # Esquemas Zod para validación
-│   ├── types/           # Tipos TypeScript
-│   ├── utils/           # Utilidades
-│   ├── views/           # Vistas principales
-│   ├── App.vue          # Componente raíz
-│   └── main.ts         # Punto de entrada
+│   ├── compsables/        # Composables de Vue
+│   ├── plugins/           # Plugins de Vue
+│   ├── router/            # Configuración de rutas
+│   ├── schemas/           # Esquemas Zod para validación
+│   ├── types/             # Tipos TypeScript
+│   ├── utils/             # Utilidades
+│   ├── views/             # Vistas principales
+│   ├── App.vue            # Componente raíz
+│   └── main.ts            # Punto de entrada
 ├── index.html
 ├── package.json
 ├── vite.config.ts
@@ -201,9 +201,9 @@ Historial completo de jornadas:
 ### 6. Cuentas Claras (`/cuentas-claras`)
 
 Módulo de cuentas claras:
-- Gestión de cuentas
-- Seguimiento de pagos
-- Historial de estados
+- Gestión de clientes
+- Seguimiento de deudas
+
 
 ## Integración con el Backend
 
