@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue';
 import type { Cliente } from '@/types/clientes.types';
 import type { LayoutType } from '@/types/ui.types';
-import { formatearMonto } from '@/utils/formatters';
+import { formatCurrency } from '@/utils/formatters';
 
 // --- 1. Props y Emits ---
 const props = defineProps<{ data?: Cliente[] }>();
@@ -127,9 +127,10 @@ const toggleMenu = (event: Event, item: Cliente) => {
       <template #empty>
         <div class="gap-2 bg-white p-2 dark:bg-zinc-900">
           <div
-            class="flex h-24 flex-col items-center justify-center gap-2 rounded-2xl border border-zinc-200 bg-zinc-50 p-3 text-center font-medium text-zinc-400 shadow-xs ring-2 ring-white ring-inset dark:border-zinc-700 dark:bg-zinc-800/65 dark:text-zinc-500 dark:ring-zinc-900/65"
+            class="flex h-24 flex-col items-center justify-center gap-1.5 rounded-2xl border border-zinc-200 bg-zinc-50 p-3 text-center font-medium text-zinc-400 shadow-xs ring-2 ring-white ring-inset dark:border-zinc-700 dark:bg-zinc-800/65 dark:text-zinc-500 dark:ring-zinc-900/65"
           >
-            <span>No se encontraron registros</span>
+            <i class="fi-rr-user text-xl"></i>
+            <span>No se encontraron clientes</span>
           </div>
         </div>
       </template>
@@ -147,7 +148,9 @@ const toggleMenu = (event: Event, item: Cliente) => {
             >
               <template #body="{ data }">
                 <div class="flex items-center gap-3">
-                  <div class="grid size-8 place-items-center rounded-lg bg-emerald-100 text-base font-extrabold text-emerald-500 dark:text-emerald-400 ring ring-current/20 ring-inset dark:bg-emerald-500/10">
+                  <div
+                    class="grid size-8 place-items-center rounded-lg bg-emerald-100 text-base font-extrabold text-emerald-500 ring ring-current/20 ring-inset dark:bg-emerald-500/10 dark:text-emerald-400"
+                  >
                     <span>{{ data.nombre.charAt(0) }}</span>
                   </div>
                   <span>{{ data.nombre }}</span>
@@ -165,7 +168,7 @@ const toggleMenu = (event: Event, item: Cliente) => {
               <template #body="{ data }">
                 <div class="flex items-center gap-2">
                   <i class="fi-rr-phone-flip text-zinc-300 dark:text-zinc-600"></i>
-                  <span>{{ data.contacto || 'No proporcionado' }}</span>
+                  <span>{{ data.contacto || 'N/A' }}</span>
                 </div>
               </template>
             </Column>
@@ -174,7 +177,7 @@ const toggleMenu = (event: Event, item: Cliente) => {
               header="Deuda"
             >
               <template #body="{ data }">
-                <span>{{ formatearMonto(data.deuda) }} Bs</span>
+                <span>{{ formatCurrency(data.deuda) }}</span>
               </template>
             </Column>
             <Column
@@ -183,8 +186,8 @@ const toggleMenu = (event: Event, item: Cliente) => {
             >
               <template #body="{ data }">
                 <Tag
-                  :value="data.deuda === 0 || data.deuda !== undefined ? 'Al día' : 'Pendiente'"
-                  :severity="data.deuda === 0 || data.deuda !== undefined ? 'success' : 'warn'"
+                  :value="Number(data.deuda) === 0 ? 'Al día' : 'Pendiente'"
+                  :severity="Number(data.deuda) === 0 ? 'success' : 'warn'"
                   class="h-5! ring ring-current/10 ring-inset *:text-xs!"
                 />
               </template>
@@ -230,7 +233,7 @@ const toggleMenu = (event: Event, item: Cliente) => {
               </div>
               <div class="flex items-center gap-2">
                 <i class="fi-rr-phone-flip text-zinc-300 dark:text-zinc-600"></i>
-                <span>{{ item.contacto || 'No proporcionado' }}</span>
+                <span>{{ item.contacto || 'N/A' }}</span>
               </div>
             </div>
 
@@ -238,13 +241,13 @@ const toggleMenu = (event: Event, item: Cliente) => {
             <div class="flex items-center justify-between">
               <div class="flex flex-col">
                 <span class="text-xs! font-bold text-zinc-500 dark:text-zinc-400">Total adeudado</span>
-                <span class="text-lg! font-extrabold">{{ formatearMonto(item.deuda) }} <span class="font-semibold text-zinc-400 dark:text-zinc-500">Bs</span></span>
+                <span class="text-lg! font-extrabold">{{ formatCurrency(item.deuda) }}</span>
               </div>
               <div class="flex h-full flex-col items-end gap-1">
                 <span class="text-xs! font-bold text-zinc-500 dark:text-zinc-400">Estado</span>
                 <Tag
-                  :value="item.deuda === 0 || item.deuda !== undefined ? 'Al día' : 'Pendiente'"
-                  :severity="item.deuda === 0 || item.deuda !== undefined ? 'success' : 'warn'"
+                  :value="Number(item.deuda) === 0 ? 'Al día' : 'Pendiente'"
+                  :severity="Number(item.deuda) === 0 ? 'success' : 'warn'"
                   class="h-5! ring ring-current/10 ring-inset *:text-xs!"
                 />
               </div>

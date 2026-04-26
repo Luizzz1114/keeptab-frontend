@@ -1,30 +1,26 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import type { Cliente } from '@/types/clientes.types';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { getClienteSchema } from '@/schemas/clientes.schema';
 import clientesService from '@/api/services/clientes.service';
 
 const visible = defineModel<boolean>('visible');
-const emit = defineEmits(['confirmEdit']);
-const props = defineProps<{ cliente: Cliente }>();
-
-const initialValues = computed(() => {
-  return {
-    ...props.cliente,
-  };
+const emit = defineEmits<{ (e: 'confirmCreate', payload: Cliente): void }>();
+const cliente = ref<Cliente>({
+  nombre: '',
+  cedula: '',
+  contacto: '',
 });
 
 const isCheckingCedula = ref(false);
-const memoriaValidaciones = new Map<string, boolean>();
+const validationCache = new Map<string, boolean>();
 let debounceTimer: ReturnType<typeof setTimeout>;
 
-const verificarCedula = (cedula: string): Promise<boolean> => {
-  if (!cedula || props.cliente?.cedula === cedula) {
-    return Promise.resolve(true);
-  }
-  if (memoriaValidaciones.has(cedula)) {
-    return Promise.resolve(memoriaValidaciones.get(cedula)!);
+const checkCedula = (cedula: string): Promise<boolean> => {
+  if (!cedula) return Promise.resolve(true);
+  if (validationCache.has(cedula)) {
+    return Promise.resolve(validationCache.get(cedula)!);
   }
   isCheckingCedula.value = true;
   return new Promise((resolve) => {
@@ -33,10 +29,10 @@ const verificarCedula = (cedula: string): Promise<boolean> => {
       try {
         const response = await clientesService.search(cedula);
         const disponible = response.data.length === 0;
-        memoriaValidaciones.set(cedula, disponible); 
+        validationCache.set(cedula, disponible);
         resolve(disponible);
       } catch (error) {
-        resolve(false); 
+        resolve(false);
       } finally {
         isCheckingCedula.value = false;
       }
@@ -44,16 +40,12 @@ const verificarCedula = (cedula: string): Promise<boolean> => {
   });
 };
 
-const clienteSchema = getClienteSchema(verificarCedula);
+const clienteSchema = getClienteSchema(checkCedula);
 const resolver = ref(zodResolver(clienteSchema));
 
 const onSubmit = (event: any) => {
   if (!event.valid) return;
-  const payload: Cliente = {
-    id: props.cliente.id,
-    ...event.values,
-  };
-  emit('confirmEdit', payload);
+  emit('confirmCreate', event.values);
   visible.value = false;
 };
 </script>
@@ -72,7 +64,7 @@ const onSubmit = (event: any) => {
             <i class="fi-sr-users"></i>
           </div>
           <div class="flex flex-col">
-            <span class="text-lg! font-bold dark:text-zinc-200">Editar cliente</span>
+            <span class="text-lg! font-bold dark:text-zinc-200">Registrar cliente</span>
           </div>
         </div>
         <Button
@@ -85,8 +77,7 @@ const onSubmit = (event: any) => {
       <Form
         v-slot="$form"
         :resolver="resolver"
-        :initialValues="initialValues"
-        :key="cliente?.id"
+        :initialValues="cliente"
         @submit="onSubmit"
         class="flex h-full flex-col overflow-hidden"
       >
@@ -130,7 +121,10 @@ const onSubmit = (event: any) => {
                   fluid
                 />
                 <InputIcon>
-                  <i v-if="isCheckingCedula" class="fi-rr-spinner animate-spin text-emerald-500"></i>
+                  <i
+                    v-if="isCheckingCedula"
+                    class="fi-rr-spinner animate-spin text-emerald-500"
+                  ></i>
                 </InputIcon>
               </IconField>
               <Message
@@ -172,7 +166,7 @@ const onSubmit = (event: any) => {
             severity="secondary"
           />
           <Button
-            label="Guardar"
+            label="Registrar"
             type="submit"
             size="small"
           />
