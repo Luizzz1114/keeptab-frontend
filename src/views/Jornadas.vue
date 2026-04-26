@@ -45,7 +45,7 @@ const handleDeleteSaleRequest = (item: Venta) => {
   const info = {
     'Hora de la venta': formatTinyDate(item?.created_at),
     Total: formatCurrency(item.total || 0),
-    Estatus: item.estatus === 'PAGADA' ? 'Pagada' : 'A crédito',
+    Estatus: item.estatus === 'CONTADO' ? 'De contado' : 'A crédito',
   };
   confirmDialogRef.value.openConfirm(item, info);
 };

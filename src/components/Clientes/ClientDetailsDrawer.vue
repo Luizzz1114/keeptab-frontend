@@ -46,7 +46,7 @@ const calcularRestante = (venta: Venta) => {
 
 const deudaTotal = computed(() => {
   if (!props.cliente?.ventas) return 0;
-  return props.cliente.ventas.filter((v) => v.estatus === 'FIADA').reduce((acc, venta) => acc + calcularRestante(venta), 0);
+  return props.cliente.ventas.filter((v) => v.estatus === 'CREDITO').reduce((acc, venta) => acc + calcularRestante(venta), 0);
 });
 </script>
 
@@ -134,11 +134,11 @@ const deudaTotal = computed(() => {
                   <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
                       <div class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-zinc-200/50 text-zinc-500 dark:bg-zinc-400/10 dark:text-zinc-300">
-                        <i :class="venta.estatus === 'PAGADA' ? 'fi-rr-check-circle' : 'fi-rr-time-fast'"></i>
+                        <i :class="venta.estatus === 'CONTADO' ? 'fi-rr-check-circle' : 'fi-rr-time-fast'"></i>
                       </div>
                       <div class="flex flex-col">
                         <div class="flex items-center gap-2">
-                          <span class="text-sm font-bold text-zinc-700 dark:text-zinc-200"> {{ venta.estatus === 'PAGADA' ? 'Venta' : 'A crédito' }} #{{ venta.id }} </span>
+                          <span class="text-sm font-bold text-zinc-700 dark:text-zinc-200"> {{ venta.estatus === 'CONTADO' ? 'Venta' : 'A crédito' }} #{{ venta.id }} </span>
                         </div>
                         <span class="text-[11px]! text-zinc-500 dark:text-zinc-400">
                           {{ formatTinyDate(venta.fecha) }}
@@ -148,7 +148,7 @@ const deudaTotal = computed(() => {
                     <div class="flex flex-col items-end">
                       <span class="text-base font-semibold text-zinc-700 dark:text-zinc-200">{{ formatCurrency(venta.total) }}</span>
                       <Tag
-                        v-if="venta.estatus === 'FIADA'"
+                        v-if="venta.estatus === 'CREDITO'"
                         :value="'Resta: ' + formatCurrency(calcularRestante(venta))"
                         severity="warn"
                         class="h-5! ring ring-current/10 ring-inset *:text-xs!"
@@ -156,7 +156,7 @@ const deudaTotal = computed(() => {
                     </div>
                   </div>
 
-                  <div v-if="venta.estatus === 'FIADA' && venta.detalles && venta.detalles.length > 0">
+                  <div v-if="venta.estatus === 'CREDITO' && venta.detalles && venta.detalles.length > 0">
                     <div class="flex flex-col gap-2 rounded-xl bg-white p-3 ring-1 ring-zinc-200 ring-inset dark:bg-zinc-900/50 dark:ring-zinc-700/50">
                       <span class="text-xs! font-extrabold text-zinc-400 uppercase dark:text-zinc-500">Productos adeudados</span>
                       <div class="flex flex-col">
@@ -175,7 +175,7 @@ const deudaTotal = computed(() => {
                         </div>
                       </div>
                       <div
-                        v-if="venta.estatus === 'FIADA'"
+                        v-if="venta.estatus === 'CREDITO'"
                         class="flex justify-end"
                       >
                         <Button

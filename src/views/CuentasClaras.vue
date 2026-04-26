@@ -122,7 +122,7 @@ const calcularRestante = (venta: Venta) => {
 
 const deudaTotal = (cliente: Cliente) => {
   if (!cliente?.ventas) return 0;
-  return cliente.ventas.filter((v) => v.estatus === 'FIADA').reduce((acc, venta) => acc + calcularRestante(venta), 0);
+  return cliente.ventas.filter((v) => v.estatus === 'CREDITO').reduce((acc, venta) => acc + calcularRestante(venta), 0);
 };
 </script>
 

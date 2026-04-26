@@ -197,10 +197,10 @@ const totalArticulosVendidos = computed(() => {
                 >
                   <div class="flex items-center gap-3">
                     <div class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-zinc-200/50 text-zinc-500 dark:bg-zinc-400/10 dark:text-zinc-300">
-                      <i :class="item.estatus === 'PAGADA' ? 'fi-rr-arrow-trend-up' : 'fi-rr-memo-pad'"></i>
+                      <i :class="item.estatus === 'CONTADO' ? 'fi-rr-arrow-trend-up' : 'fi-rr-memo-pad'"></i>
                     </div>
                     <div class="flex flex-col">
-                      <span class="text-sm font-bold text-zinc-700 dark:text-zinc-200"> {{ item.estatus === 'PAGADA' ? 'Venta' : 'A crédito' }} #{{ item.id }} </span>
+                      <span class="text-sm font-bold text-zinc-700 dark:text-zinc-200"> {{ item.estatus === 'CONTADO' ? 'Venta' : 'A crédito' }} #{{ item.id }} </span>
                       <span class="text-[11px]! text-zinc-500 dark:text-zinc-400">
                         {{ getTimeAgo(item.created_at) }}
                       </span>

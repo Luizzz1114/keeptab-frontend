@@ -54,8 +54,8 @@ const props = defineProps<{ venta: Venta | null }>();
               <span class="text-sm! font-semibold text-zinc-400 dark:text-zinc-500">Estatus</span>
               <div>
                 <Tag
-                  :value="venta.estatus === 'PAGADA' ? 'Pagada' : 'A débito'"
-                  :severity="venta.estatus === 'PAGADA' ? 'Success' : 'warn'"
+                  :value="venta.estatus === 'CONTADO' ? 'De contado' : 'A crédito'"
+                  :severity="venta.estatus === 'CONTADO' ? 'Success' : 'warn'"
                   class="h-5! ring ring-current/10 ring-inset *:text-xs!"
                 />
               </div>

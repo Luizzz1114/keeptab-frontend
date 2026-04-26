@@ -32,9 +32,9 @@ const closeCart = () => {
   resetForm();
 };
 
-const procesar = (estatus: 'FIADA' | 'PAGADA') => {
+const procesar = (estatus: 'CREDITO' | 'CONTADO') => {
   if (props.cart.length === 0) return;
-  if (estatus === 'FIADA' && !selectedClient.value) {
+  if (estatus === 'CREDITO' && !selectedClient.value) {
     isClientInvalid.value = true;
     return;
   }
@@ -171,7 +171,7 @@ const procesar = (estatus: 'FIADA' | 'PAGADA') => {
           size="small"
           variant="simple"
         >
-          Debe seleccionar un cliente para poder FIADA
+          Debe seleccionar un cliente para poder vender a crédito
         </Message>
       </div>
       <div class="flex items-end justify-between">
@@ -180,16 +180,16 @@ const procesar = (estatus: 'FIADA' | 'PAGADA') => {
       </div>
       <div class="flex gap-3 *:flex-1">
         <Button
-          label="Fiar"
+          label="A crédito"
           icon="fi-rr-memo-pad text-base!"
           severity="secondary"
-          @click="procesar('FIADA')"
+          @click="procesar('CREDITO')"
           :disabled="cart.length === 0"
         />
         <Button
-          label="Cobrar"
+          label="Al contado"
           icon="fi-rr-money-bills-simple text-lg!"
-          @click="procesar('PAGADA')"
+          @click="procesar('CONTADO')"
           :disabled="cart.length === 0"
         />
       </div>
