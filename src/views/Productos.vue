@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import type { Producto } from '@/types/productos.types';
-import TableGrid from '@/components/Productos/TableGrid.vue';
 import Breadcrumb from '@/components/ui/CustomBreadcrumb.vue';
-import DrawerRegister from '@/components/Productos/DrawerRegister.vue';
-import DrawerEdit from '@/components/Productos/DrawerEdit.vue';
+import ProductsDataView from '@/components/Productos/ProductsDataView.vue';
+import ProductCreateDrawer from '@/components/Productos/ProductCreateDrawer.vue';
+import ProductEditDrawer from '@/components/Productos/ProductEditDrawer.vue';
 import DialogDelete from '@/components/ui/DialogDelete.vue';
 import productosService from '@/api/services/productos.service';
-import { useNotificaciones } from '@/componsables/useNotificaciones';
-import { formatearMonto } from '@/utils/formatters';
+import { useNotifications } from '@/componsables/useNotificaciones';
+import { formatCurrency } from '@/utils/formatters';
 
 // --- Configuración de la vista ---
-const { showSuccess, showError } = useNotificaciones();
+const { showSuccess, showError } = useNotifications();
 
 const items = [{ label: 'Productos', route: '/productos' }];
 
@@ -21,8 +21,8 @@ const isDrawerEditOpen = ref<boolean>(false);
 const confirmDialogRef = ref<any>(null);
 
 const handleEditRequest = async (item: Producto) => {
-  selectedProducto.value = item;
-  if (selectedProducto.value) {
+  selectedProduct.value = item;
+  if (selectedProduct.value) {
     isDrawerEditOpen.value = true;
   }
 };
@@ -31,25 +31,19 @@ const handleDeleteRequest = (item: Producto) => {
   const info = {
     'Nombre del producto': item.nombre,
     Categoría: item.categoria,
-    Precio: `${formatearMonto(item.precio)} Bs`,
-    Stock: item.conteo ? `${item.stock} unidades` : '\u221E Infinito',
+    Precio: formatCurrency(item.precio),
+    Stock: item.conteo ? `${item.stock} unid.` : '\u221E Infinito',
   };
   confirmDialogRef.value.openConfirm(item, info);
 };
 
 // --- Operaciones con la API ---
-const productos = ref<Producto[]>([]);
-const selectedProducto = ref<Producto>({
-  nombre: '',
-  categoria: '',
-  precio: 0.0,
-  conteo: false,
-  stock: 0,
-});
+const products = ref<Producto[]>([]);
+const selectedProduct = ref<Producto | null>(null);
 
-const create = async (producto: Producto) => {
+const create = async (product: Producto) => {
   try {
-    const res = await productosService.create(producto);
+    const res = await productosService.create(product);
     showSuccess(res.message);
     await getAll();
   } catch (error: any) {
@@ -60,19 +54,19 @@ const create = async (producto: Producto) => {
 const getAll = async () => {
   try {
     const res = await productosService.getAll();
-    productos.value = res.data;
+    products.value = res.data;
   } catch (error: any) {
     showError(error.response.data.message);
   }
 };
 
-const update = async (producto: Producto) => {
+const update = async (product: Producto) => {
   try {
-    const res = await productosService.update(producto);
+    const res = await productosService.update(product);
     showSuccess(res.message);
     await getAll();
   } catch (error: any) {
-    console.log(error.response.data.message);
+    showError(error.response.data.message);
   }
 };
 
@@ -82,7 +76,7 @@ const remove = async (id: Producto['id']) => {
     showSuccess(res.message);
     await getAll();
   } catch (error: any) {
-    console.log(error.response.data.message);
+    showError(error.response.data.message);
   }
 };
 
@@ -101,11 +95,32 @@ onMounted(async () => {
         </div>
         <h2 class="text-lg font-extrabold dark:text-zinc-200">Productos</h2>
       </div>
-      <Button @click="isDrawerRegisterOpen = true" label="Nuevo producto" icon="fi-br-plus-small" size="small" class="flex! h-9! items-center! shadow-xs!" />
+      <Button
+        @click="isDrawerRegisterOpen = true"
+        label="Nuevo producto"
+        icon="fi-br-plus-small"
+        size="small"
+        class="flex! h-9! items-center! shadow-xs!"
+      />
     </div>
-    <TableGrid :data="productos" @edit="handleEditRequest" @delete="handleDeleteRequest" />
-    <DrawerEdit v-model:visible="isDrawerEditOpen" :producto="selectedProducto" @confirm-edit="update" />
-    <DrawerRegister v-model:visible="isDrawerRegisterOpen" @confirm-create="create" />
-    <DialogDelete ref="confirmDialogRef" @confirm-delete="remove" />
+    <ProductsDataView
+      :data="products"
+      @edit="handleEditRequest"
+      @delete="handleDeleteRequest"
+    />
+    <ProductCreateDrawer
+      v-model:visible="isDrawerRegisterOpen"
+      @confirm-create="create"
+    />
+    <ProductEditDrawer
+      v-model:visible="isDrawerEditOpen"
+      :producto="selectedProduct"
+      @confirm-edit="update"
+    />
+    <DialogDelete
+      ref="confirmDialogRef"
+      label="producto"
+      @confirm-delete="remove"
+    />
   </div>
 </template>

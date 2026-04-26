@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onUnmounted, ref } from 'vue';
 import type { Producto } from '@/types/productos.types';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
-import { getProductoSchema, categoriasProductos, conteoOpciones } from '@/schemas/productos.schema';
+import { getProductoSchema, productCategories, countingOptions } from '@/schemas/productos.schema';
 import productosService from '@/api/services/productos.service';
 
 const visible = defineModel<boolean>('visible');
-const emit = defineEmits(['confirmCreate']);
+const emit = defineEmits<{ (e: 'confirmCreate', payload: Producto): void }>();
+
 const producto = ref<Producto>({
   nombre: '',
   categoria: '',
@@ -15,46 +16,50 @@ const producto = ref<Producto>({
   stock: 0,
 });
 
-const isCheckingNombre = ref(false);
-const memoriaValidaciones = new Map<string, boolean>();
+const isCheckingName = ref(false);
+const validationCache = new Map<string, boolean>();
 let debounceTimer: ReturnType<typeof setTimeout>;
 
-const verificarNombre = (nombre: string): Promise<boolean> => {
+const checkNameAvailability = (nombre: string): Promise<boolean> => {
   if (!nombre) return Promise.resolve(true);
-  if (memoriaValidaciones.has(nombre)) {
-    return Promise.resolve(memoriaValidaciones.get(nombre)!);
+  if (validationCache.has(nombre)) {
+    return Promise.resolve(validationCache.get(nombre)!);
   }
-  isCheckingNombre.value = true;
+  isCheckingName.value = true;
   return new Promise((resolve) => {
-    clearTimeout(debounceTimer); 
+    clearTimeout(debounceTimer);
     debounceTimer = setTimeout(async () => {
       try {
         const response = await productosService.search(nombre);
         const disponible = response.data.length === 0;
-        memoriaValidaciones.set(nombre, disponible); 
+        validationCache.set(nombre, disponible);
         resolve(disponible);
       } catch (error) {
         resolve(false);
       } finally {
-        isCheckingNombre.value = false;
+        isCheckingName.value = false;
       }
     }, 500);
   });
 };
 
-const productoSchema = getProductoSchema(verificarNombre);
-const resolver = ref(zodResolver(productoSchema));
+const productoSchema = getProductoSchema(checkNameAvailability);
+const resolver = zodResolver(productoSchema);
 
 const onSubmit = (event: any) => {
   if (!event.valid) return;
   const data = event.values;
   const payload: Producto = {
     ...data,
-    stock: data.conteo ? data.stock : undefined,
+    stock: data.conteo ? data.stock : 0,
   };
   emit('confirmCreate', payload);
   visible.value = false;
 };
+
+onUnmounted(() => {
+  clearTimeout(debounceTimer);
+});
 </script>
 
 <template>
@@ -108,7 +113,10 @@ const onSubmit = (event: any) => {
                   fluid
                 />
                 <InputIcon>
-                  <i v-if="isCheckingNombre" class="fi-rr-spinner animate-spin text-emerald-500"></i>
+                  <i
+                    v-if="isCheckingName"
+                    class="fi-rr-spinner animate-spin text-emerald-500"
+                  ></i>
                 </InputIcon>
               </IconField>
               <Message
@@ -124,7 +132,7 @@ const onSubmit = (event: any) => {
               <span>Categoría <span class="text-red-500">*</span></span>
               <Select
                 name="categoria"
-                :options="categoriasProductos"
+                :options="productCategories"
                 placeholder="Seleccione"
                 size="small"
                 fluid
@@ -175,7 +183,7 @@ const onSubmit = (event: any) => {
               <span>¿Controlar inventario? <span class="text-red-500">*</span></span>
               <SelectButton
                 name="conteo"
-                :options="conteoOpciones"
+                :options="countingOptions"
                 optionLabel="label"
                 optionValue="value"
                 fluid
