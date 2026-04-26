@@ -24,12 +24,12 @@ defineProps({
           class="text-sm"
         ></i>
       </div>
-      <span :class="['text-sm font-bold', variant === 'success' ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-500 dark:text-zinc-300']">
+      <span :class="['text-sm font-bold', variant === 'success' ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-600 dark:text-zinc-300']">
         {{ title }}
       </span>
     </div>
 
-    <span :class="['text-xl font-bold', variant === 'success' ? 'text-emerald-500 dark:text-emerald-400' : 'text-zinc-500 dark:text-zinc-300']">
+    <span :class="['text-xl font-bold', variant === 'success' ? 'text-emerald-500 dark:text-emerald-400' : 'text-zinc-600 dark:text-zinc-300']">
       {{ value }}
     </span>
 

@@ -5,6 +5,7 @@ import Productos from '@/views/Productos.vue';
 import CuentasClaras from '@/views/CuentasClaras.vue';
 import Jornadas from '@/views/Jornadas.vue';
 import Usuarios from '@/views/Usuarios.vue';
+import HistorialJornadas from '@/views/HistorialJornadas.vue';
 
 const routes = [
   {
@@ -34,8 +35,18 @@ const routes = [
       },
       {
         path: 'jornadas',
-        name: 'Jornadas',
-        component: Jornadas,
+        children: [
+          {
+            path: '',
+            name: 'Jornadas',
+            component: Jornadas,
+          },
+          {
+            path: 'historial',
+            name: 'HistorialJornadas',
+            component: HistorialJornadas,
+          },
+        ],
       },
       {
         path: 'usuarios',

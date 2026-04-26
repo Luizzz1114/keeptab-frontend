@@ -16,18 +16,24 @@ const menuGroups: MenuGroup[] = [
   {
     title: 'Gestión',
     items: [
-      { name: 'Jornadas', path: '/jornadas', icon: 'fi-sr-calculator' },
+      { name: 'Jornadas', path: '/jornadas', icon: 'fi-sr-calendar' },
       { name: 'Usuarios', path: '/usuarios', icon: 'fi-sr-user' },
     ],
   },
 ];
+
+const handleItemClick = () => {
+  if (window.innerWidth < 768) {
+    emit('toggle-sidebar');
+  }
+};
 </script>
 
 <template>
   <div
     v-if="!isCollapsed"
     @click="emit('toggle-sidebar')"
-    class="fixed inset-0 z-50 bg-zinc-900/30 backdrop-blur-sm transition-opacity md:hidden"
+    class="fixed inset-0 z-50 bg-black/40 transition-opacity md:hidden"
   ></div>
   <aside
     :class="isCollapsed ? '-translate-x-full md:w-0 md:translate-x-0' : 'w-62 translate-x-0'"
@@ -64,6 +70,7 @@ const menuGroups: MenuGroup[] = [
             >
               <router-link
                 :to="item.path"
+                @click="handleItemClick"
                 class="group flex w-full items-center gap-3 rounded-xl p-1 ring ring-zinc-300/0 duration-250 ease-in-out hover:bg-zinc-100/50 hover:ring-zinc-300/40 dark:hover:bg-zinc-800/30 dark:hover:ring-zinc-700/35"
                 active-class="active ring ring-zinc-300/100 bg-zinc-100 shadow-xs dark:ring-zinc-700/75 dark:bg-zinc-800/40"
               >

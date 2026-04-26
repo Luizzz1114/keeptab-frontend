@@ -1,13 +1,21 @@
-<script setup>
+<script setup lang="ts">
 import { useConfirm } from 'primevue/useconfirm';
+
+const props = withDefaults(defineProps<{ label?: string }>(), {
+  label: 'registro',
+});
+
+const emit = defineEmits<{
+  (e: 'confirmDelete', id: number): void;
+}>();
 
 const confirm = useConfirm();
 
-const openConfirm = (item, details) => {
+const openConfirm = (item: any, details: string) => {
   confirm.require({
     group: 'headless',
     message: details,
-    header: 'Eliminar registro',
+    header: `Eliminar ${props.label}`,
     accept: () => {
       emit('confirmDelete', item.id);
     },
@@ -15,7 +23,6 @@ const openConfirm = (item, details) => {
 };
 
 defineExpose({ openConfirm });
-const emit = defineEmits(['confirmDelete']);
 </script>
 
 <template>
@@ -24,12 +31,12 @@ const emit = defineEmits(['confirmDelete']);
     class="w-11/12 max-w-md overflow-hidden rounded-2xl!"
   >
     <template #container="{ message, acceptCallback, rejectCallback }">
-      <div class="relative bg-zinc-0 dark:bg-zinc-850 flex flex-col items-center p-6">
+      <div class="bg-zinc-0 dark:bg-zinc-850 relative flex flex-col items-center p-6">
         <Button
           @click="rejectCallback"
           icon="fi-br-cross"
           severity="secondary"
-          class="size-8! *:text-xs! absolute! right-6 top-6"
+          class="absolute! top-6 right-6 size-8! *:text-xs!"
         />
         <div class="grid size-10 place-items-center rounded-xl border border-red-200 bg-red-100 text-lg dark:border-red-500/20 dark:bg-red-500/10">
           <i class="fi-rr-hexagon-exclamation text-xl! text-red-400!"></i>

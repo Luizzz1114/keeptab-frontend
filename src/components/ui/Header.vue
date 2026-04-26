@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { fechaFormateada } from '@/utils/formatters';
+import { getFormattedDate } from '@/utils/formatters';
 
 defineProps<{ isDark: boolean }>();
 const emit = defineEmits(['toggle-sidebar', 'toggle-dark-mode']);
@@ -24,7 +24,7 @@ const emit = defineEmits(['toggle-sidebar', 'toggle-dark-mode']);
       <div class="p-1">
         <div class="flex items-center justify-center gap-2 px-2 text-sm text-zinc-600 dark:text-zinc-400">
           <i class="fi-sr-calendar-day text-sm! text-zinc-400"></i>
-          {{ fechaFormateada() }}
+          {{ getFormattedDate() }}
         </div>
       </div>
     </div>
