@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 defineProps({
   title: { type: String, required: true },
   value: { type: [String, Number], required: true },
@@ -7,7 +7,7 @@ defineProps({
   variant: {
     type: String,
     default: 'default',
-    validator: (value) => ['default', 'success'].includes(value),
+    validator: (value: string) => ['default', 'success'].includes(value),
   },
 });
 </script>
