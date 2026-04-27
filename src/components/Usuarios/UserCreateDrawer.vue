@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { Usuario } from '@/types/usuarios.types';
+import type { UsuarioForm } from '@/types/usuarios.types';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { getUsuarioSchema, roles } from '@/schemas/usuarios.schema';
 import usuariosService from '@/api/services/usuarios.service';
 
 const visible = defineModel<boolean>('visible');
-const emit = defineEmits<{ (e: 'confirmCreate', payload: Usuario): void }>();
+const emit = defineEmits<{ (e: 'confirmCreate', payload: UsuarioForm): void }>();
 
-const usuario = ref<Usuario>({
+const usuario = ref<UsuarioForm>({
   username: '',
   rol: '',
   password: '',

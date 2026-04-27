@@ -2,7 +2,6 @@
 import { ref, computed } from 'vue';
 import type { Usuario } from '@/types/usuarios.types';
 import type { LayoutType } from '@/types/ui.types';
-import { formatTinyDate } from '@/utils/formatters';
 
 // --- 1. Props y Emits ---
 const props = defineProps<{ data?: Usuario[] }>();

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import type { Usuario } from '@/types/usuarios.types';
+import type { UsuarioForm } from '@/types/usuarios.types';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { getUsuarioSchema, roles } from '@/schemas/usuarios.schema';
 import usuariosService from '@/api/services/usuarios.service';
 
 const visible = defineModel<boolean>('visible');
-const emit = defineEmits<{ (e: 'confirmEdit', payload: Usuario): void }>();
-const props = defineProps<{ usuario: Usuario | null }>();
+const emit = defineEmits<{ (e: 'confirmEdit', payload: UsuarioForm): void }>();
+const props = defineProps<{ usuario: UsuarioForm | null }>();
 
 const initialValues = computed(() => {
   return {
@@ -49,7 +49,7 @@ const resolver = zodResolver(usuarioSchema);
 
 const onSubmit = (event: any) => {
   if (!event.valid) return;
-  const payload: Usuario = {
+  const payload: UsuarioForm = {
     id: props.usuario?.id,
     ...event.values,
   };
