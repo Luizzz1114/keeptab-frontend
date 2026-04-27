@@ -1,4 +1,4 @@
-# KeepTab - Frontend
+<h1 align="center">KeepTab - Frontend</h1>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Vue.js-3.x-4FC08D?logo=vuedotjs&logoColor=white" alt="Vue.js" />
@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  Interfaz web para sistema POS y control de inventario. Consume la API RESTful del backend keeptab para la administración de productos, clientes, transacciones de ventas, control de abonos y seguimiento de jornadas de trabajo.
+  Interfaz web para sistema POS y control de inventario. Consume la API RESTful del KeepTab - Backend para la administración de productos, clientes, transacciones de ventas, control de abonos y seguimiento de jornadas de trabajo.
 </p>
 
 ## Tabla de Contenidos
