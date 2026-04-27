@@ -161,13 +161,13 @@ Página principal para realizar ventas. Incluye:
 - Listado de productos disponibles
 - Carrito de compras interactivo
 - Selección de cliente (opcional)
-- Métodos de pago (contado/credito)
-- Registro rápido de nuevas ventas
+- Métodos de pago (contado/crédito)
+- Registro rápido de ventas
 
 ### 2. Productos (`/productos`)
 
 Gestión del inventario de productos:
-- Listado de productos con búsqueda y filtros
+- Listado de productos
 - Registro de nuevos productos
 - Edición de productos existentes
 - Control de stock por unidad
@@ -185,18 +185,15 @@ Administración de usuarios del sistema:
 ### 4. Jornadas (`/jornadas`)
 
 Control de jornadas de trabajo:
-- Listado de jornadas históricas
+- Vista de jornada actual
 - Apertura de nuevas jornadas
 - Cierre de jornadas con cálculo de totales
-- Vista de jornada actual
 
 ### 5. Historial de Jornadas (`/historial-jornadas`)
 
 Historial completo de jornadas:
 - Listado de todas las jornadas
-- Filtros por fecha
 - Detalles de cada jornada
-- Reportes de ventas por jornada
 
 ### 6. Cuentas Claras (`/cuentas-claras`)
 
@@ -207,7 +204,7 @@ Módulo de cuentas claras:
 
 ## Integración con el Backend
 
-El frontend consume la API RESTful del backend keeptab. Asegúrate de que el backend esté configurado correctamente.
+El frontend consume la API RESTful del [backend](https://github.com/Luizzz1114/keeptab-backend). Asegúrate de que el backend esté configurado correctamente.
 
 ### Autenticación
 
@@ -221,7 +218,7 @@ El sistema utiliza cookies HttpOnly para la autenticación. El frontend envía c
 | Productos | GET, POST, PATCH, DELETE |
 | Clientes | GET, POST, PATCH, DELETE |
 | Ventas | GET, POST, DELETE |
-| Abonos | GET, POST, DELETE |
+| Abonos | GET, POST |
 | Jornadas | GET, POST, PATCH, DELETE |
 | Usuarios | GET, POST, PATCH, DELETE |
 
