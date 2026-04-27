@@ -7,7 +7,7 @@ import ProductCreateDrawer from '@/components/Productos/ProductCreateDrawer.vue'
 import ProductEditDrawer from '@/components/Productos/ProductEditDrawer.vue';
 import DialogDelete from '@/components/ui/DialogDelete.vue';
 import productosService from '@/api/services/productos.service';
-import { useNotifications } from '@/componsables/useNotificaciones';
+import { useNotifications } from '@/composables/useNotifications';
 import { formatCurrency } from '@/utils/formatters';
 
 // --- Configuración de la vista ---

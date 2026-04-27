@@ -10,8 +10,7 @@ import ClientEditDrawer from '@/components/Clientes/ClientEditDrawer.vue';
 import DialogDelete from '@/components/ui/DialogDelete.vue';
 import clientesService from '@/api/services/clientes.service';
 import abonosService from '@/api/services/abonos.service';
-import { useNotifications } from '@/componsables/useNotificaciones';
-import type { Venta } from '@/types/ventas.types';
+import { useNotifications } from '@/composables/useNotifications';
 
 // --- Configuración de la vista ---
 const { showSuccess, showError } = useNotifications();
@@ -112,18 +111,6 @@ const remove = async (id: Cliente['id']) => {
 onMounted(async () => {
   await getAll();
 });
-
-// --- Cálculos ---
-const calcularRestante = (venta: Venta) => {
-  const total = venta.total || 0;
-  const abonado = venta.abonos?.reduce((acc, abono) => acc + (Number(abono.monto) || 0), 0) || 0;
-  return total - abonado;
-};
-
-const deudaTotal = (cliente: Cliente) => {
-  if (!cliente?.ventas) return 0;
-  return cliente.ventas.filter((v) => v.estatus === 'CREDITO').reduce((acc, venta) => acc + calcularRestante(venta), 0);
-};
 </script>
 
 <template>

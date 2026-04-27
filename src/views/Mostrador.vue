@@ -12,7 +12,7 @@ import productosService from '@/api/services/productos.service';
 import clientesService from '@/api/services/clientes.service';
 import ventasService from '@/api/services/ventas.service';
 import jornadasService from '@/api/services/jornadas.service';
-import { useNotifications } from '@/componsables/useNotificaciones';
+import { useNotifications } from '@/composables/useNotifications';
 
 // --- Configuración de la vista ---
 const { showSuccess, showError, showWarning } = useNotifications();
@@ -46,11 +46,11 @@ const getJornadaActual = async () => {
   try {
     const res = await jornadasService.getActual();
     workday.value = res.data;
-  } catch (error: any) {
-    if (error.response.status === 404) {
+    if (workday.value === null) {
       isWarningVisible.value = true;
       return;
     }
+  } catch (error: any) {
     showError(error.response.data.message);
   }
 };

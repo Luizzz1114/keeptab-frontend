@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import type { Usuario } from '@/types/usuarios.types';
+import type { UsuarioForm } from '@/types/usuarios.types';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { loginSchema } from '@/schemas/login.schema';
-import { useNotifications } from '@/componsables/useNotificaciones';
+import { useNotifications } from '@/composables/useNotifications';
 import { useAuthStore } from '@/stores/auth.store';
 import authService from '@/api/services/auth.service';
 
 const { showError, showWarning } = useNotifications();
-const usuario = ref<Usuario>({
+const usuario = ref<UsuarioForm>({
   username: '',
   password: '',
 });

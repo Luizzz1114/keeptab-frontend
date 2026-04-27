@@ -7,7 +7,7 @@ import UserCreateDrawer from '@/components/Usuarios/UserCreateDrawer.vue';
 import UserEditDrawer from '@/components/Usuarios/UserEditDrawer.vue';
 import DialogDelete from '@/components/ui/DialogDelete.vue';
 import usuariosService from '@/api/services/usuarios.service';
-import { useNotifications } from '@/componsables/useNotificaciones';
+import { useNotifications } from '@/composables/useNotifications';
 
 // --- Configuración de la vista ---
 const { showSuccess, showError } = useNotifications();

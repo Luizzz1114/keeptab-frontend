@@ -5,7 +5,7 @@ import Breadcrumb from '@/components/ui/CustomBreadcrumb.vue';
 import WorkdayHistoryList from '@/components/Jornadas/WorkdayHistoryList.vue';
 import WorkdayDetailsDrawer from '@/components/Jornadas/WorkdayDetailsDrawer.vue';
 import jornadasService from '@/api/services/jornadas.service';
-import { useNotifications } from '@/componsables/useNotificaciones';
+import { useNotifications } from '@/composables/useNotifications';
 
 // --- Configuración de la vista ---
 const { showError } = useNotifications();

@@ -11,7 +11,7 @@ import DialogDelete from '@/components/ui/DialogDelete.vue';
 import SaleDetailsDrawer from '@/components/Jornadas/SaleDetailsDrawer.vue';
 import jornadasService from '@/api/services/jornadas.service';
 import ventasService from '@/api/services/ventas.service';
-import { useNotifications } from '@/componsables/useNotificaciones';
+import { useNotifications } from '@/composables/useNotifications';
 import { formatCurrency, formatTinyDate } from '@/utils/formatters';
 import { useAuthStore } from '@/stores/auth.store';
 
@@ -71,9 +71,9 @@ const handleView = async (venta: Venta) => {
 // --- Operaciones con la API ---
 const workday = ref<JornadaActual | null>(null);
 
-const create = async (jornada: Jornada) => {
+const open = async (jornada: Jornada) => {
   try {
-    const res = await jornadasService.create(jornada);
+    const res = await jornadasService.open(jornada);
     showSuccess(res.message);
     await getActual();
   } catch (error: any) {
@@ -91,9 +91,9 @@ const getActual = async () => {
   }
 };
 
-const update = async (jornada: Jornada) => {
+const close = async (jornada: Jornada) => {
   try {
-    const res = await jornadasService.update(jornada);
+    const res = await jornadasService.close(jornada);
     showSuccess(res.message);
   } catch (error: any) {
     showError(error.response.data.message);
@@ -222,12 +222,12 @@ onMounted(async () => {
     />
     <WorkdayOpenDialog
       v-model:visible="isDialogRegisterOpen"
-      @confirm-create="create"
+      @confirm-create="open"
     />
     <WorkdayCloseDialog
       v-model:visible="isDialogEditOpen"
       :jornada-id="workday?.id"
-      @confirm-edit="update"
+      @confirm-edit="close"
     />
     <DialogDelete
       ref="confirmDialogRef"
