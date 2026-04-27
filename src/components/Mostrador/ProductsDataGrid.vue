@@ -10,6 +10,7 @@ const emit = defineEmits<{ (e: 'add-to-cart', producto: Producto): void }>();
 
 // --- 2. Estado (Refs) ---
 const searchQuery = ref<string>('');
+const rows = ref<number>(8);
 
 // --- 3. Propiedades Computadas ---
 const filteredData = computed(() => {
@@ -30,6 +31,8 @@ const agregarAlCarrito = (producto: Producto) => {
   <div class="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50 shadow-xs dark:border-zinc-700 dark:bg-zinc-950/50">
     <DataView
       :value="filteredData"
+      :rows="rows"
+      paginator
       layout="grid"
     >
       <template #header>
@@ -50,6 +53,40 @@ const agregarAlCarrito = (producto: Producto) => {
         </div>
       </template>
 
+      <template #paginatorcontainer="{ first, last, page, pageCount, prevPageCallback, nextPageCallback, totalRecords }">
+        <div class="flex w-full items-center justify-between">
+          <div class="flex items-center gap-4">
+            <div class="flex gap-2">
+              <Button
+                @click="prevPageCallback"
+                :disabled="page === 0"
+                variant="outlined"
+                severity="secondary"
+                icon="fi-rr-angle-small-left text-lg!"
+                class="size-9! shadow-xs"
+              />
+              <Button
+                @click="nextPageCallback"
+                :disabled="page === (pageCount || 0) - 1 || (totalRecords || 0) === 0"
+                variant="outlined"
+                severity="secondary"
+                icon="fi-rr-angle-small-right text-lg!"
+                class="size-9! shadow-xs"
+              />
+            </div>
+            <span class="text-sm! text-zinc-600 dark:text-zinc-400"> {{ (totalRecords || 0) > 0 ? first || 0 : 0 }} - {{ last || 0 }} de {{ totalRecords || 0 }} </span>
+          </div>
+          <div class="flex items-center gap-2">
+            <Select
+              v-model="rows"
+              :options="[4, 8, 12, 16, 20]"
+              size="small"
+              class="h-9!"
+            />
+          </div>
+        </div>
+      </template>
+
       <template #empty>
         <div class="gap-2 bg-white p-2 dark:bg-zinc-900">
           <div
@@ -62,14 +99,14 @@ const agregarAlCarrito = (producto: Producto) => {
       </template>
 
       <template #grid="slotProps">
-        <div class="grid grid-cols-1 gap-2 bg-white p-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 dark:bg-zinc-900">
+        <div class="flex flex-wrap items-center gap-2 bg-white p-2 dark:bg-zinc-900">
           <Button
             v-for="item in slotProps.items"
             :key="item.id"
             @click="agregarAlCarrito(item)"
             :disabled="item.conteo === true && item.stock === 0"
             unstyled
-            class="flex flex-col gap-2 rounded-2xl border border-zinc-200 bg-zinc-50 p-3 text-start! shadow-xs ring-2 ring-white duration-200 ease-in-out ring-inset dark:border-zinc-700 dark:bg-zinc-800/65 dark:ring-zinc-900/65"
+            class="flex min-w-64 flex-1 flex-col gap-2 rounded-2xl border border-zinc-200 bg-zinc-50 p-3 text-start! shadow-xs ring-2 ring-white duration-200 ease-in-out ring-inset dark:border-zinc-700 dark:bg-zinc-800/65 dark:ring-zinc-900/65"
             :class="[item.conteo === true && item.stock === 0 ? 'opacity-60 grayscale' : 'cursor-pointer hover:scale-101! hover:border-emerald-400 active:scale-99! active:border-emerald-200!']"
           >
             <div class="flex items-start justify-between">
