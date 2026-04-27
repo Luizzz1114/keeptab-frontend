@@ -1,14 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useAuthStore } from '@/stores/auth.store';
 import LoginLayout from '@/components/layout/LoginLayout.vue';
 import MainLayout from '@/components/layout/MainLayout.vue';
-import Login from '@/views/Login.vue';
-import Mostrador from '@/views/Mostrador.vue';
-import Productos from '@/views/Productos.vue';
-import CuentasClaras from '@/views/CuentasClaras.vue';
-import Jornadas from '@/views/Jornadas.vue';
-import Usuarios from '@/views/Usuarios.vue';
-import HistorialJornadas from '@/views/HistorialJornadas.vue';
-import { useAuthStore } from '@/stores/auth.store';
 
 const routes = [
   {
@@ -19,7 +12,7 @@ const routes = [
       {
         path: '',
         name: 'Login',
-        component: Login,
+        component: () => import('@/views/Login.vue'),
       },
     ],
   },
@@ -29,25 +22,25 @@ const routes = [
     component: MainLayout,
     meta: { autenticado: true },
     children: [
-      { 
+      {
         path: '',
         name: 'Placeholder',
-        redirect: '/mostrador' 
+        redirect: '/mostrador',
       },
       {
         path: 'mostrador',
         name: 'Mostrador',
-        component: Mostrador,
+        component: () => import('@/views/Mostrador.vue'),
       },
       {
         path: 'productos',
         name: 'Productos',
-        component: Productos,
+        component: () => import('@/views/Productos.vue'),
       },
       {
         path: 'cuentas',
         name: 'CuentasClaras',
-        component: CuentasClaras,
+        component: () => import('@/views/CuentasClaras.vue'),
       },
       {
         path: 'jornadas',
@@ -55,20 +48,20 @@ const routes = [
           {
             path: '',
             name: 'Jornadas',
-            component: Jornadas,
+            component: () => import('@/views/Jornadas.vue'),
           },
           {
             path: 'historial',
             name: 'HistorialJornadas',
-            component: HistorialJornadas,
+            component: () => import('@/views/HistorialJornadas.vue'),
           },
         ],
       },
       {
         path: 'usuarios',
         name: 'Usuarios',
-        component: Usuarios,
         meta: { roles: ['ADMIN'] },
+        component: () => import('@/views/Usuarios.vue'),
       },
     ],
   },
@@ -79,29 +72,25 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from) => {
   const authStore = useAuthStore();
-	const userData = authStore.getData;
+  const userData = authStore.getData;
   const isAuthenticated = authStore.isAuthenticated;
   const userRole = userData?.rol;
 
   if (to.meta.autenticado && !isAuthenticated) {
-    return next('/login');
+    return '/login';
   }
-	if (!to.meta.autenticado && isAuthenticated) {
-    return next('/mostrador')
-	}
+  if (!to.meta.autenticado && isAuthenticated) {
+    return '/mostrador';
+  }
 
   const requiredRoles = to.meta.roles as string[];
-  
+
   if (isAuthenticated && requiredRoles) {
-    if (requiredRoles.includes(userRole || '')) {
-      next();
-    } else {
-      next('/mostrador'); 
+    if (!requiredRoles.includes(userRole || '')) {
+      return '/mostrador';
     }
-  } else {
-    next();
   }
 });
 
