@@ -62,7 +62,7 @@ El frontend sigue una arquitectura basada en **Vistas/Componentes** con separaci
 
 ```text
 keeptab-frontend/          # Frontend — Vue 3 + PrimeVue + TailwindCSS
-
+│
 ├── src/
 │   ├── api/               # Configuración y servicios de API
 │   │   └── services/      # Servicios para cada entidad (auth, productos, ventas, etc.)
