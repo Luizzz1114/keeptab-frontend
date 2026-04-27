@@ -38,7 +38,9 @@ defineExpose({ openConfirm });
           severity="secondary"
           class="absolute! top-6 right-6 size-8! *:text-xs!"
         />
-        <div class="grid size-10 place-items-center rounded-xl border border-red-200 bg-red-100 text-lg dark:border-red-500/20 dark:bg-red-500/10">
+        <div
+          class="grid size-10 place-items-center rounded-xl border border-red-200 bg-red-100 text-lg dark:border-red-500/20 dark:bg-red-500/10"
+        >
           <i class="fi-rr-hexagon-exclamation text-xl! text-red-400!"></i>
         </div>
         <span class="mt-2 text-xl! font-bold">{{ message.header }}</span>
@@ -50,12 +52,17 @@ defineExpose({ openConfirm });
             v-for="(val, label, index) in message.message"
             :key="label"
             class="flex items-center justify-between gap-4 px-3 py-2 text-sm"
-            :class="{ 'border-b border-zinc-200 dark:border-zinc-700': index !== Object.keys(message.message).length - 1 }"
+            :class="{
+              'border-b border-zinc-200 dark:border-zinc-700':
+                index !== Object.keys(message.message).length - 1,
+            }"
           >
             <span class="font-medium whitespace-nowrap text-zinc-500 dark:text-zinc-400">
               {{ label }}
             </span>
-            <span class="max-w-[60%] truncate text-right font-semibold text-zinc-800 dark:text-zinc-200">
+            <span
+              class="max-w-[60%] truncate text-right font-semibold text-zinc-800 dark:text-zinc-200"
+            >
               {{ val }}
             </span>
           </div>

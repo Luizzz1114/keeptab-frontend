@@ -25,17 +25,23 @@ watch(
 </script>
 
 <template>
-  <div class="flex h-dvh w-dvw justify-end overflow-hidden bg-zinc-200 bg-linear-to-b p-1.5 dark:bg-zinc-950">
-    <div class="flex flex-1 flex-col items-center justify-center sm:p-4">
-      
-    </div>
-    <div class="flex h-full w-full flex-col items-center rounded-2xl border border-zinc-300 bg-white p-6 shadow-xs sm:w-100 dark:border-zinc-800 dark:bg-zinc-900">
+  <div
+    class="flex h-dvh w-dvw justify-end overflow-hidden bg-zinc-200 bg-linear-to-b p-1.5 dark:bg-zinc-950"
+  >
+    <div class="flex flex-1 flex-col items-center justify-center sm:p-4"></div>
+    <div
+      class="flex h-full w-full flex-col items-center rounded-2xl border border-zinc-300 bg-white p-6 shadow-xs sm:w-100 dark:border-zinc-800 dark:bg-zinc-900"
+    >
       <div class="flex w-full items-center justify-between">
         <div class="flex shrink-0 items-center gap-3 overflow-hidden">
-          <div class="grid size-9 shrink-0 place-items-center rounded-lg bg-emerald-500 p-1 text-xl text-white">
+          <div
+            class="grid size-9 shrink-0 place-items-center rounded-lg bg-emerald-500 p-1 text-xl text-white"
+          >
             <i class="fi-sr-receipt"></i>
           </div>
-          <span class="text-lg font-extrabold whitespace-nowrap text-zinc-700 dark:text-zinc-200">KeepTab</span>
+          <span class="text-lg font-extrabold whitespace-nowrap text-zinc-700 dark:text-zinc-200"
+            >KeepTab</span
+          >
         </div>
         <Button
           @click="handleToggleDarkMode"

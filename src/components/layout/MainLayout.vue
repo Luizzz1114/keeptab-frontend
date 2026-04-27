@@ -51,7 +51,9 @@ watch(
       :is-collapsed="isSidebarCollapsed"
       @toggle-sidebar="closeSidebar"
     />
-    <div class="flex w-full flex-1 flex-col overflow-hidden border-zinc-300 bg-white shadow-xs md:rounded-2xl md:border dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-zinc-400/10">
+    <div
+      class="flex w-full flex-1 flex-col overflow-hidden border-zinc-300 bg-white shadow-xs md:rounded-2xl md:border dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-zinc-400/10"
+    >
       <Header
         :is-dark="isDark"
         :is-collapsed="isSidebarCollapsed"

@@ -46,7 +46,9 @@ const calcularRestante = (venta: Venta) => {
 
 const deudaTotal = computed(() => {
   if (!props.cliente?.ventas) return 0;
-  return props.cliente.ventas.filter((v) => v.estatus === 'CREDITO').reduce((acc, venta) => acc + calcularRestante(venta), 0);
+  return props.cliente.ventas
+    .filter((v) => v.estatus === 'CREDITO')
+    .reduce((acc, venta) => acc + calcularRestante(venta), 0);
 });
 </script>
 
@@ -58,7 +60,9 @@ const deudaTotal = computed(() => {
     class="m-2! h-[calc(100dvh-1rem)]! w-[calc(100%-1rem)]! overflow-hidden rounded-2xl! border! md:w-180!"
   >
     <template #container="{ closeCallback }">
-      <div class="flex h-16 items-center justify-between border-b border-zinc-200 p-4 dark:border-zinc-700">
+      <div
+        class="flex h-16 items-center justify-between border-b border-zinc-200 p-4 dark:border-zinc-700"
+      >
         <div class="flex items-center gap-3">
           <div class="grid size-9 place-items-center rounded-lg bg-emerald-500 text-lg text-white">
             <i class="fi-sr-user"></i>
@@ -93,12 +97,16 @@ const deudaTotal = computed(() => {
 
             <div class="flex flex-col gap-0.5">
               <span class="text-sm! font-semibold text-zinc-400 dark:text-zinc-500">Cédula</span>
-              <span class="font-medium text-zinc-700 dark:text-zinc-200">{{ cliente.cedula || 'N/A' }}</span>
+              <span class="font-medium text-zinc-700 dark:text-zinc-200">{{
+                cliente.cedula || 'N/A'
+              }}</span>
             </div>
 
             <div class="flex flex-col gap-0.5">
               <span class="text-sm! font-semibold text-zinc-400 dark:text-zinc-500">Contacto</span>
-              <span class="font-medium text-zinc-700 dark:text-zinc-200">{{ cliente.contacto || 'N/A' }}</span>
+              <span class="font-medium text-zinc-700 dark:text-zinc-200">{{
+                cliente.contacto || 'N/A'
+              }}</span>
             </div>
 
             <div class="flex flex-col items-start gap-0.5">
@@ -111,8 +119,12 @@ const deudaTotal = computed(() => {
             </div>
 
             <div class="flex flex-col gap-0.5">
-              <span class="text-sm! font-semibold text-zinc-400 dark:text-zinc-500">Total adeudado</span>
-              <span class="font-bold text-zinc-700 dark:text-zinc-200">{{ formatCurrency(deudaTotal) }}</span>
+              <span class="text-sm! font-semibold text-zinc-400 dark:text-zinc-500"
+                >Total adeudado</span
+              >
+              <span class="font-bold text-zinc-700 dark:text-zinc-200">{{
+                formatCurrency(deudaTotal)
+              }}</span>
             </div>
           </div>
 
@@ -121,7 +133,9 @@ const deudaTotal = computed(() => {
           >
             <div class="flex items-center gap-2">
               <i class="fi-br-receipt text-base text-emerald-500"></i>
-              <span class="text-sm! font-extrabold uppercase">Historial de ventas ({{ cliente.ventas?.length || 0 }})</span>
+              <span class="text-sm! font-extrabold uppercase"
+                >Historial de ventas ({{ cliente.ventas?.length || 0 }})</span
+              >
             </div>
 
             <div class="flex flex-col">
@@ -133,12 +147,22 @@ const deudaTotal = computed(() => {
                 >
                   <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
-                      <div class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-zinc-200/50 text-zinc-500 dark:bg-zinc-400/10 dark:text-zinc-300">
-                        <i :class="venta.estatus === 'CONTADO' ? 'fi-rr-check-circle' : 'fi-rr-time-fast'"></i>
+                      <div
+                        class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-zinc-200/50 text-zinc-500 dark:bg-zinc-400/10 dark:text-zinc-300"
+                      >
+                        <i
+                          :class="
+                            venta.estatus === 'CONTADO' ? 'fi-rr-check-circle' : 'fi-rr-time-fast'
+                          "
+                        ></i>
                       </div>
                       <div class="flex flex-col">
                         <div class="flex items-center gap-2">
-                          <span class="text-sm font-bold text-zinc-700 dark:text-zinc-200"> {{ venta.estatus === 'CONTADO' ? 'Venta' : 'A crédito' }} #{{ venta.id }} </span>
+                          <span class="text-sm font-bold text-zinc-700 dark:text-zinc-200">
+                            {{ venta.estatus === 'CONTADO' ? 'Venta' : 'A crédito' }} #{{
+                              venta.id
+                            }}
+                          </span>
                         </div>
                         <span class="text-[11px]! text-zinc-500 dark:text-zinc-400">
                           {{ formatTinyDate(venta.fecha) }}
@@ -146,7 +170,9 @@ const deudaTotal = computed(() => {
                       </div>
                     </div>
                     <div class="flex flex-col items-end">
-                      <span class="text-base font-semibold text-zinc-700 dark:text-zinc-200">{{ formatCurrency(venta.total) }}</span>
+                      <span class="text-base font-semibold text-zinc-700 dark:text-zinc-200">{{
+                        formatCurrency(venta.total)
+                      }}</span>
                       <Tag
                         v-if="venta.estatus === 'CREDITO'"
                         :value="'Resta: ' + formatCurrency(calcularRestante(venta))"
@@ -156,9 +182,18 @@ const deudaTotal = computed(() => {
                     </div>
                   </div>
 
-                  <div v-if="venta.estatus === 'CREDITO' && venta.detalles && venta.detalles.length > 0">
-                    <div class="flex flex-col gap-2 rounded-xl bg-white p-3 ring-1 ring-zinc-200 ring-inset dark:bg-zinc-900/50 dark:ring-zinc-700/50">
-                      <span class="text-xs! font-extrabold text-zinc-400 uppercase dark:text-zinc-500">Productos adeudados</span>
+                  <div
+                    v-if="
+                      venta.estatus === 'CREDITO' && venta.detalles && venta.detalles.length > 0
+                    "
+                  >
+                    <div
+                      class="flex flex-col gap-2 rounded-xl bg-white p-3 ring-1 ring-zinc-200 ring-inset dark:bg-zinc-900/50 dark:ring-zinc-700/50"
+                    >
+                      <span
+                        class="text-xs! font-extrabold text-zinc-400 uppercase dark:text-zinc-500"
+                        >Productos adeudados</span
+                      >
                       <div class="flex flex-col">
                         <div
                           v-for="detalle in venta.detalles"
@@ -166,8 +201,13 @@ const deudaTotal = computed(() => {
                           class="flex items-center justify-between border-b border-zinc-100 py-2 first:pt-0 last:border-0 last:pb-0 dark:border-zinc-800"
                         >
                           <div class="flex flex-col">
-                            <span class="font-bold text-zinc-700 dark:text-zinc-200">{{ detalle.producto?.nombre }}</span>
-                            <span class="text-[11px]! text-zinc-500 dark:text-zinc-400"> {{ detalle.cantidad }} unid. x {{ formatCurrency(detalle.precio_unitario || 0) }} </span>
+                            <span class="font-bold text-zinc-700 dark:text-zinc-200">{{
+                              detalle.producto?.nombre
+                            }}</span>
+                            <span class="text-[11px]! text-zinc-500 dark:text-zinc-400">
+                              {{ detalle.cantidad }} unid. x
+                              {{ formatCurrency(detalle.precio_unitario || 0) }}
+                            </span>
                           </div>
                           <span class="text-sm! font-bold text-zinc-600 dark:text-zinc-300">
                             {{ formatCurrency(detalle.subtotal || 0) }}
@@ -202,7 +242,9 @@ const deudaTotal = computed(() => {
           </div>
         </div>
 
-        <div class="flex h-16 shrink-0 items-center justify-end gap-3 border-t border-zinc-200 p-4 dark:border-zinc-700">
+        <div
+          class="flex h-16 shrink-0 items-center justify-end gap-3 border-t border-zinc-200 p-4 dark:border-zinc-700"
+        >
           <Button
             @click="closeCallback"
             label="Cerrar"
@@ -223,7 +265,9 @@ const deudaTotal = computed(() => {
     <template #container="{ closeCallback }">
       <div class="relative flex items-center justify-between p-6 dark:border-zinc-700">
         <div class="flex w-full flex-col items-center justify-center gap-2">
-          <div class="grid size-10 place-items-center rounded-xl border border-emerald-200 bg-emerald-100 text-lg dark:border-emerald-500/20 dark:bg-emerald-500/10">
+          <div
+            class="grid size-10 place-items-center rounded-xl border border-emerald-200 bg-emerald-100 text-lg dark:border-emerald-500/20 dark:bg-emerald-500/10"
+          >
             <i class="fi-sr-coins text-xl text-emerald-500"></i>
           </div>
           <div class="flex flex-col">
@@ -244,8 +288,12 @@ const deudaTotal = computed(() => {
             class="grid grid-cols-1 gap-3 rounded-2xl border border-zinc-200 bg-zinc-50 p-4 pb-5 shadow-xs ring-2 ring-white ring-inset dark:border-zinc-700 dark:bg-zinc-800/65 dark:ring-zinc-900/65"
           >
             <span class="text-center text-sm text-zinc-500 dark:text-zinc-400">
-              Ingresa el monto a abonar para la venta <strong class="text-zinc-600 dark:text-zinc-300">#{{ ventaSeleccionada?.id }}</strong
-              >. Monto restante: <strong class="text-zinc-600 dark:text-zinc-300">{{ formatCurrency(calcularRestante(ventaSeleccionada!)) }}</strong>
+              Ingresa el monto a abonar para la venta
+              <strong class="text-zinc-600 dark:text-zinc-300">#{{ ventaSeleccionada?.id }}</strong
+              >. Monto restante:
+              <strong class="text-zinc-600 dark:text-zinc-300">{{
+                formatCurrency(calcularRestante(ventaSeleccionada!))
+              }}</strong>
             </span>
             <div class="flex flex-col gap-0.5">
               <label for="montoAbono">Monto <span class="text-red-500">*</span></label>

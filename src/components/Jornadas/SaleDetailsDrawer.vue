@@ -14,7 +14,9 @@ const props = defineProps<{ venta: Venta | null }>();
     class="m-2! h-[calc(100dvh-1rem)]! w-[calc(100%-1rem)]! overflow-hidden rounded-2xl! border! md:w-180!"
   >
     <template #container="{ closeCallback }">
-      <div class="flex h-16 items-center justify-between border-b border-zinc-200 p-4 dark:border-zinc-700">
+      <div
+        class="flex h-16 items-center justify-between border-b border-zinc-200 p-4 dark:border-zinc-700"
+      >
         <div class="flex items-center gap-3">
           <div class="grid size-9 place-items-center rounded-lg bg-emerald-500 text-lg text-white">
             <i class="fi-sr-receipt"></i>
@@ -69,8 +71,12 @@ const props = defineProps<{ venta: Venta | null }>();
             </div>
 
             <div class="flex flex-col gap-0.5">
-              <span class="text-sm! font-semibold text-zinc-400 dark:text-zinc-500">Total Venta</span>
-              <span class="font-bold text-emerald-600 dark:text-emerald-400"> {{ formatCurrency(venta.total) }}</span>
+              <span class="text-sm! font-semibold text-zinc-400 dark:text-zinc-500"
+                >Total Venta</span
+              >
+              <span class="font-bold text-emerald-600 dark:text-emerald-400">
+                {{ formatCurrency(venta.total) }}</span
+              >
             </div>
           </div>
 
@@ -85,21 +91,29 @@ const props = defineProps<{ venta: Venta | null }>();
 
             <div class="flex flex-col gap-0.5">
               <span class="text-sm! font-semibold text-zinc-400 dark:text-zinc-500">Nombre</span>
-              <span class="font-medium text-zinc-700 dark:text-zinc-200">{{ venta.cliente.nombre }}</span>
+              <span class="font-medium text-zinc-700 dark:text-zinc-200">{{
+                venta.cliente.nombre
+              }}</span>
             </div>
 
             <div class="flex flex-col gap-0.5">
               <span class="text-sm! font-semibold text-zinc-400 dark:text-zinc-500">Cédula</span>
-              <span class="font-medium text-zinc-700 dark:text-zinc-200">{{ venta.cliente.cedula || 'N/A' }}</span>
+              <span class="font-medium text-zinc-700 dark:text-zinc-200">{{
+                venta.cliente.cedula || 'N/A'
+              }}</span>
             </div>
 
             <div class="flex flex-col gap-0.5">
               <span class="text-sm! font-semibold text-zinc-400 dark:text-zinc-500">Contacto</span>
-              <span class="font-medium text-zinc-700 dark:text-zinc-200">{{ venta.cliente.contacto || 'N/A' }}</span>
+              <span class="font-medium text-zinc-700 dark:text-zinc-200">{{
+                venta.cliente.contacto || 'N/A'
+              }}</span>
             </div>
           </div>
 
-          <div class="flex flex-col gap-4 rounded-2xl border border-zinc-200 bg-zinc-50 p-4 pb-5 shadow-xs ring-2 ring-white ring-inset dark:border-zinc-700 dark:bg-zinc-800/65 dark:ring-zinc-900/65">
+          <div
+            class="flex flex-col gap-4 rounded-2xl border border-zinc-200 bg-zinc-50 p-4 pb-5 shadow-xs ring-2 ring-white ring-inset dark:border-zinc-700 dark:bg-zinc-800/65 dark:ring-zinc-900/65"
+          >
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
                 <i class="fi-br-box text-base text-emerald-500"></i>
@@ -117,15 +131,22 @@ const props = defineProps<{ venta: Venta | null }>();
                   <span class="font-bold text-zinc-900 dark:text-zinc-200">
                     {{ detalle.producto?.nombre }}
                   </span>
-                  <span class="text-xs! text-zinc-500 dark:text-zinc-400">{{ detalle.cantidad }} unid. x {{ formatCurrency(detalle.precio_unitario || 0) }}</span>
+                  <span class="text-xs! text-zinc-500 dark:text-zinc-400"
+                    >{{ detalle.cantidad }} unid. x
+                    {{ formatCurrency(detalle.precio_unitario || 0) }}</span
+                  >
                 </div>
-                <div class="font-bold text-zinc-700 dark:text-zinc-100">{{ formatCurrency(detalle.subtotal || 0) }}</div>
+                <div class="font-bold text-zinc-700 dark:text-zinc-100">
+                  {{ formatCurrency(detalle.subtotal || 0) }}
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="flex h-16 shrink-0 items-center justify-end gap-3 border-t border-zinc-200 p-4 dark:border-zinc-700">
+        <div
+          class="flex h-16 shrink-0 items-center justify-end gap-3 border-t border-zinc-200 p-4 dark:border-zinc-700"
+        >
           <Button
             @click="closeCallback"
             label="Cerrar"

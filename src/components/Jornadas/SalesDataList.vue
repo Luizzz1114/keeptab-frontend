@@ -42,13 +42,17 @@ const toggleMenu = (event: Event, item: Venta) => {
 <template>
   <div>
     <div class="flex items-center gap-3">
-      <div class="grid size-9 place-items-center rounded-xl bg-emerald-100 font-bold text-emerald-500 ring ring-current/20 ring-inset dark:bg-emerald-500/10 dark:text-emerald-400">
+      <div
+        class="grid size-9 place-items-center rounded-xl bg-emerald-100 font-bold text-emerald-500 ring ring-current/20 ring-inset dark:bg-emerald-500/10 dark:text-emerald-400"
+      >
         <i class="fi-br-pending"></i>
       </div>
       <span class="font-bold">Actividad reciente</span>
     </div>
 
-    <div class="mt-4 flex flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50 shadow-xs ring-2 ring-white ring-inset dark:border-zinc-700 dark:bg-zinc-800/65 dark:ring-zinc-900/65">
+    <div
+      class="mt-4 flex flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50 shadow-xs ring-2 ring-white ring-inset dark:border-zinc-700 dark:bg-zinc-800/65 dark:ring-zinc-900/65"
+    >
       <DataView
         :value="ventas"
         :rows="rows"
@@ -62,18 +66,26 @@ const toggleMenu = (event: Event, item: Venta) => {
               class="mb-3 flex items-center justify-between border-b border-zinc-200 pb-3 last:mb-0 last:border-0 last:pb-0 dark:border-zinc-700"
             >
               <div class="flex items-center gap-3">
-                <div class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-zinc-200/50 text-zinc-500 dark:bg-zinc-400/10 dark:text-zinc-300">
-                  <i :class="item.estatus === 'CONTADO' ? 'fi-sr-arrow-trend-up' : 'fi-rr-memo-pad'"></i>
+                <div
+                  class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-zinc-200/50 text-zinc-500 dark:bg-zinc-400/10 dark:text-zinc-300"
+                >
+                  <i
+                    :class="item.estatus === 'CONTADO' ? 'fi-sr-arrow-trend-up' : 'fi-rr-memo-pad'"
+                  ></i>
                 </div>
                 <div class="flex flex-col">
-                  <span class="text-sm font-bold text-zinc-700 dark:text-zinc-200"> {{ item.estatus === 'CONTADO' ? 'Venta' : 'A crédito' }} #{{ item.id }} </span>
+                  <span class="text-sm font-bold text-zinc-700 dark:text-zinc-200">
+                    {{ item.estatus === 'CONTADO' ? 'Venta' : 'A crédito' }} #{{ item.id }}
+                  </span>
                   <span class="text-[11px]! text-zinc-500 dark:text-zinc-400">
                     {{ getTimeAgo(item.created_at) }}
                   </span>
                 </div>
               </div>
               <div class="flex items-center gap-4">
-                <span class="text-base font-semibold text-zinc-700 dark:text-zinc-200">{{ formatCurrency(item.total) }}</span>
+                <span class="text-base font-semibold text-zinc-700 dark:text-zinc-200">{{
+                  formatCurrency(item.total)
+                }}</span>
                 <Button
                   @click="toggleMenu($event, item)"
                   type="button"
@@ -86,8 +98,20 @@ const toggleMenu = (event: Event, item: Venta) => {
           </div>
         </template>
 
-        <template #paginatorcontainer="{ first, last, page, pageCount, prevPageCallback, nextPageCallback, totalRecords }">
-          <div class="flex w-full items-center justify-between border-zinc-200 p-1 dark:border-zinc-700">
+        <template
+          #paginatorcontainer="{
+            first,
+            last,
+            page,
+            pageCount,
+            prevPageCallback,
+            nextPageCallback,
+            totalRecords,
+          }"
+        >
+          <div
+            class="flex w-full items-center justify-between border-zinc-200 p-1 dark:border-zinc-700"
+          >
             <div class="flex items-center gap-4">
               <div class="flex gap-2">
                 <Button
@@ -107,7 +131,10 @@ const toggleMenu = (event: Event, item: Venta) => {
                   class="size-9! shadow-xs"
                 />
               </div>
-              <span class="text-sm! text-zinc-600 dark:text-zinc-400"> {{ (totalRecords || 0) > 0 ? first || 0 : 0 }} - {{ last || 0 }} de {{ totalRecords || 0 }} </span>
+              <span class="text-sm! text-zinc-600 dark:text-zinc-400">
+                {{ (totalRecords || 0) > 0 ? first || 0 : 0 }} - {{ last || 0 }} de
+                {{ totalRecords || 0 }}
+              </span>
             </div>
             <div class="flex items-center gap-2">
               <Select
@@ -121,7 +148,9 @@ const toggleMenu = (event: Event, item: Venta) => {
         </template>
 
         <template #empty>
-          <div class="flex flex-col items-center justify-center gap-1.5 p-6 text-center text-sm text-zinc-400 dark:text-zinc-500">
+          <div
+            class="flex flex-col items-center justify-center gap-1.5 p-6 text-center text-sm text-zinc-400 dark:text-zinc-500"
+          >
             <i class="fi-rr-receipt text-2xl"></i>
             No hay ventas registradas en esta jornada
           </div>

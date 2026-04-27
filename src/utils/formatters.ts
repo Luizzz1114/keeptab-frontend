@@ -12,7 +12,20 @@ export const formatCurrency = (amount: string | number) => {
 // --- Obtener fecha formateada ---
 export function getFormattedDate() {
   const today = new Date();
-  const months = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+  const months = [
+    'ene',
+    'feb',
+    'mar',
+    'abr',
+    'may',
+    'jun',
+    'jul',
+    'ago',
+    'sep',
+    'oct',
+    'nov',
+    'dic',
+  ];
   const day = today.getDate().toString().padStart(2, '0');
   const month = months[today.getMonth()];
   const year = today.getFullYear();

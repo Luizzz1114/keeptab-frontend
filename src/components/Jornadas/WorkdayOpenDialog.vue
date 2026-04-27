@@ -31,7 +31,9 @@ const onSubmit = (event: FormSubmitEvent) => {
     <template #container="{ closeCallback }">
       <div class="relative flex items-center justify-between p-6 dark:border-zinc-700">
         <div class="flex w-full flex-col items-center justify-center gap-2">
-          <div class="grid size-10 place-items-center rounded-xl border border-emerald-200 bg-emerald-100 text-lg dark:border-emerald-500/20 dark:bg-emerald-500/10">
+          <div
+            class="grid size-10 place-items-center rounded-xl border border-emerald-200 bg-emerald-100 text-lg dark:border-emerald-500/20 dark:bg-emerald-500/10"
+          >
             <i class="fi-sr-calendar-arrow-up text-xl text-emerald-500"></i>
           </div>
           <div class="flex flex-col">
@@ -56,7 +58,9 @@ const onSubmit = (event: FormSubmitEvent) => {
           <div
             class="grid grid-cols-1 gap-3 rounded-2xl border border-zinc-200 bg-zinc-50 p-4 pb-5 shadow-xs ring-2 ring-white ring-inset dark:border-zinc-700 dark:bg-zinc-800/65 dark:ring-zinc-900/65"
           >
-            <span class="text-center text-base! font-bold">Comienza el día registrando el fondo inicial</span>
+            <span class="text-center text-base! font-bold"
+              >Comienza el día registrando el fondo inicial</span
+            >
             <div class="flex flex-col gap-0.5">
               <label for="fondo_inicial">Fondo inicial <span class="text-red-500">*</span></label>
               <InputGroup>

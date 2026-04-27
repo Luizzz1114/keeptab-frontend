@@ -17,7 +17,9 @@ const filteredData = computed(() => {
   if (!searchQuery.value || !props.data) return props.data;
   const query = searchQuery.value.toLowerCase();
   const searchFields: (keyof Producto)[] = ['nombre', 'categoria', 'precio'];
-  return props.data.filter((item) => searchFields.some((campo) => String(item[campo]).toLowerCase().includes(query)));
+  return props.data.filter((item) =>
+    searchFields.some((campo) => String(item[campo]).toLowerCase().includes(query)),
+  );
 });
 
 const agregarAlCarrito = (producto: Producto) => {
@@ -28,7 +30,9 @@ const agregarAlCarrito = (producto: Producto) => {
 </script>
 
 <template>
-  <div class="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50 shadow-xs dark:border-zinc-700 dark:bg-zinc-950/50">
+  <div
+    class="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50 shadow-xs dark:border-zinc-700 dark:bg-zinc-950/50"
+  >
     <DataView
       :value="filteredData"
       :rows="rows"
@@ -53,7 +57,17 @@ const agregarAlCarrito = (producto: Producto) => {
         </div>
       </template>
 
-      <template #paginatorcontainer="{ first, last, page, pageCount, prevPageCallback, nextPageCallback, totalRecords }">
+      <template
+        #paginatorcontainer="{
+          first,
+          last,
+          page,
+          pageCount,
+          prevPageCallback,
+          nextPageCallback,
+          totalRecords,
+        }"
+      >
         <div class="flex w-full items-center justify-between">
           <div class="flex items-center gap-4">
             <div class="flex gap-2">
@@ -74,7 +88,10 @@ const agregarAlCarrito = (producto: Producto) => {
                 class="size-9! shadow-xs"
               />
             </div>
-            <span class="text-sm! text-zinc-600 dark:text-zinc-400"> {{ (totalRecords || 0) > 0 ? first || 0 : 0 }} - {{ last || 0 }} de {{ totalRecords || 0 }} </span>
+            <span class="text-sm! text-zinc-600 dark:text-zinc-400">
+              {{ (totalRecords || 0) > 0 ? first || 0 : 0 }} - {{ last || 0 }} de
+              {{ totalRecords || 0 }}
+            </span>
           </div>
           <div class="flex items-center gap-2">
             <Select
@@ -107,10 +124,16 @@ const agregarAlCarrito = (producto: Producto) => {
             :disabled="item.conteo === true && item.stock === 0"
             unstyled
             class="flex min-w-64 flex-1 flex-col gap-2 rounded-2xl border border-zinc-200 bg-zinc-50 p-3 text-start! shadow-xs ring-2 ring-white duration-200 ease-in-out ring-inset dark:border-zinc-700 dark:bg-zinc-800/65 dark:ring-zinc-900/65"
-            :class="[item.conteo === true && item.stock === 0 ? 'opacity-60 grayscale' : 'cursor-pointer hover:scale-101! hover:border-emerald-400 active:scale-99! active:border-emerald-200!']"
+            :class="[
+              item.conteo === true && item.stock === 0
+                ? 'opacity-60 grayscale'
+                : 'cursor-pointer hover:scale-101! hover:border-emerald-400 active:scale-99! active:border-emerald-200!',
+            ]"
           >
             <div class="flex items-start justify-between">
-              <div class="grid size-10 place-items-center rounded-xl bg-emerald-100 text-lg text-emerald-500 ring ring-current/20 ring-inset dark:bg-emerald-500/10 dark:text-emerald-400">
+              <div
+                class="grid size-10 place-items-center rounded-xl bg-emerald-100 text-lg text-emerald-500 ring ring-current/20 ring-inset dark:bg-emerald-500/10 dark:text-emerald-400"
+              >
                 <i :class="iconsByCategory[item?.categoria] || iconsByCategory['Otros']"></i>
               </div>
             </div>

@@ -12,7 +12,7 @@ export const useAuthStore = defineStore(
     const getData = computed(() => {
       return {
         username: user.value?.username,
-        rol: user.value?.rol
+        rol: user.value?.rol,
       };
     });
 

@@ -44,7 +44,9 @@ const totalArticulosVendidos = computed(() => {
     class="m-2! h-[calc(100dvh-1rem)]! w-[calc(100%-1rem)]! overflow-hidden rounded-2xl! border! md:w-180!"
   >
     <template #container="{ closeCallback }">
-      <div class="flex h-16 items-center justify-between border-b border-zinc-200 p-4 dark:border-zinc-700">
+      <div
+        class="flex h-16 items-center justify-between border-b border-zinc-200 p-4 dark:border-zinc-700"
+      >
         <div class="flex items-center gap-3">
           <div class="grid size-9 place-items-center rounded-lg bg-emerald-500 text-lg text-white">
             <i class="fi-sr-calendar"></i>
@@ -116,27 +118,45 @@ const totalArticulosVendidos = computed(() => {
             </div>
 
             <div class="flex flex-col gap-0.5">
-              <span class="text-sm! font-semibold text-zinc-400 dark:text-zinc-500">Fondo Inicial</span>
-              <span class="font-medium text-zinc-700 dark:text-zinc-200">{{ formatCurrency(jornada.fondo_inicial || 0) }}</span>
+              <span class="text-sm! font-semibold text-zinc-400 dark:text-zinc-500"
+                >Fondo Inicial</span
+              >
+              <span class="font-medium text-zinc-700 dark:text-zinc-200">{{
+                formatCurrency(jornada.fondo_inicial || 0)
+              }}</span>
             </div>
 
             <div class="flex flex-col gap-0.5">
-              <span class="text-sm! font-semibold text-zinc-400 dark:text-zinc-500">Total Ventas</span>
-              <span class="font-bold text-emerald-600 dark:text-emerald-400">{{ formatCurrency(jornada.total_ventas || 0) }}</span>
+              <span class="text-sm! font-semibold text-zinc-400 dark:text-zinc-500"
+                >Total Ventas</span
+              >
+              <span class="font-bold text-emerald-600 dark:text-emerald-400">{{
+                formatCurrency(jornada.total_ventas || 0)
+              }}</span>
             </div>
 
             <div class="flex flex-col gap-0.5">
-              <span class="text-sm! font-semibold text-zinc-400 dark:text-zinc-500">Total Físico</span>
-              <span class="font-medium text-zinc-700 dark:text-zinc-200">{{ formatCurrency(jornada.total_fisico || 0) }}</span>
+              <span class="text-sm! font-semibold text-zinc-400 dark:text-zinc-500"
+                >Total Físico</span
+              >
+              <span class="font-medium text-zinc-700 dark:text-zinc-200">{{
+                formatCurrency(jornada.total_fisico || 0)
+              }}</span>
             </div>
 
             <div class="flex flex-col gap-0.5">
-              <span class="text-sm! font-semibold text-zinc-400 dark:text-zinc-500">Diferencia</span>
-              <span class="font-medium text-zinc-700 dark:text-zinc-200">{{ formatCurrency(jornada.diferencia || 0) }}</span>
+              <span class="text-sm! font-semibold text-zinc-400 dark:text-zinc-500"
+                >Diferencia</span
+              >
+              <span class="font-medium text-zinc-700 dark:text-zinc-200">{{
+                formatCurrency(jornada.diferencia || 0)
+              }}</span>
             </div>
           </div>
 
-          <div class="flex flex-col gap-3 rounded-2xl border border-zinc-200 bg-zinc-50 p-4 pb-5 shadow-xs ring-2 ring-white ring-inset dark:border-zinc-700 dark:bg-zinc-800/65 dark:ring-zinc-900/65">
+          <div
+            class="flex flex-col gap-3 rounded-2xl border border-zinc-200 bg-zinc-50 p-4 pb-5 shadow-xs ring-2 ring-white ring-inset dark:border-zinc-700 dark:bg-zinc-800/65 dark:ring-zinc-900/65"
+          >
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
                 <i class="fi-br-box text-base text-emerald-500"></i>
@@ -151,9 +171,13 @@ const totalArticulosVendidos = computed(() => {
                   :key="index"
                   class="flex items-baseline justify-between border-b border-zinc-200 py-2.5 last:border-0 last:pb-0 dark:border-zinc-700/50"
                 >
-                  <span class="font-medium text-zinc-700 dark:text-zinc-200">{{ item.nombre }}</span>
+                  <span class="font-medium text-zinc-700 dark:text-zinc-200">{{
+                    item.nombre
+                  }}</span>
                   <div class="flex items-baseline gap-2">
-                    <span class="font-bold text-zinc-600 dark:text-zinc-300">{{ item.cantidad }}</span>
+                    <span class="font-bold text-zinc-600 dark:text-zinc-300">{{
+                      item.cantidad
+                    }}</span>
                     <span class="text-xs text-zinc-400 dark:text-zinc-500">unid.</span>
                   </div>
                 </div>
@@ -161,7 +185,9 @@ const totalArticulosVendidos = computed(() => {
                 <div class="flex items-baseline justify-between pt-4">
                   <span class="font-bold text-zinc-700 uppercase dark:text-zinc-200">Total</span>
                   <div class="flex items-baseline gap-2">
-                    <span class="font-bold text-zinc-600 dark:text-zinc-300">{{ totalArticulosVendidos }}</span>
+                    <span class="font-bold text-zinc-600 dark:text-zinc-300">{{
+                      totalArticulosVendidos
+                    }}</span>
                     <span class="text-xs text-zinc-400 dark:text-zinc-500">unid.</span>
                   </div>
                 </div>
@@ -176,7 +202,9 @@ const totalArticulosVendidos = computed(() => {
             </div>
           </div>
 
-          <div class="flex flex-col gap-3 rounded-2xl border border-zinc-200 bg-zinc-50 p-4 pb-5 shadow-xs ring-2 ring-white ring-inset dark:border-zinc-700 dark:bg-zinc-800/65 dark:ring-zinc-900/65">
+          <div
+            class="flex flex-col gap-3 rounded-2xl border border-zinc-200 bg-zinc-50 p-4 pb-5 shadow-xs ring-2 ring-white ring-inset dark:border-zinc-700 dark:bg-zinc-800/65 dark:ring-zinc-900/65"
+          >
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
                 <i class="fi-br-receipt text-base text-emerald-500"></i>
@@ -192,17 +220,27 @@ const totalArticulosVendidos = computed(() => {
                   class="flex items-center justify-between border-b border-zinc-200 py-3 last:border-0 last:pb-0 dark:border-zinc-700/50"
                 >
                   <div class="flex items-center gap-3">
-                    <div class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-zinc-200/50 text-zinc-500 dark:bg-zinc-400/10 dark:text-zinc-300">
-                      <i :class="item.estatus === 'CONTADO' ? 'fi-rr-arrow-trend-up' : 'fi-rr-memo-pad'"></i>
+                    <div
+                      class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-zinc-200/50 text-zinc-500 dark:bg-zinc-400/10 dark:text-zinc-300"
+                    >
+                      <i
+                        :class="
+                          item.estatus === 'CONTADO' ? 'fi-rr-arrow-trend-up' : 'fi-rr-memo-pad'
+                        "
+                      ></i>
                     </div>
                     <div class="flex flex-col">
-                      <span class="text-sm font-bold text-zinc-700 dark:text-zinc-200"> {{ item.estatus === 'CONTADO' ? 'Venta' : 'A crédito' }} #{{ item.id }} </span>
+                      <span class="text-sm font-bold text-zinc-700 dark:text-zinc-200">
+                        {{ item.estatus === 'CONTADO' ? 'Venta' : 'A crédito' }} #{{ item.id }}
+                      </span>
                       <span class="text-[11px]! text-zinc-500 dark:text-zinc-400">
                         {{ getTimeAgo(item.created_at) }}
                       </span>
                     </div>
                   </div>
-                  <div class="font-bold text-zinc-700 dark:text-zinc-100">{{ formatCurrency(item.total) }}</div>
+                  <div class="font-bold text-zinc-700 dark:text-zinc-100">
+                    {{ formatCurrency(item.total) }}
+                  </div>
                 </div>
               </template>
 
@@ -216,7 +254,9 @@ const totalArticulosVendidos = computed(() => {
           </div>
         </div>
 
-        <div class="flex h-16 shrink-0 items-center justify-end gap-3 border-t border-zinc-200 p-4 dark:border-zinc-700">
+        <div
+          class="flex h-16 shrink-0 items-center justify-end gap-3 border-t border-zinc-200 p-4 dark:border-zinc-700"
+        >
           <Button
             @click="closeCallback"
             label="Cerrar"

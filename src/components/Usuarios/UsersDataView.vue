@@ -55,7 +55,9 @@ const toggleMenu = (event: Event, item: Usuario) => {
 </script>
 
 <template>
-  <div class="rounded-xl border border-zinc-200 bg-zinc-50 shadow-xs dark:border-zinc-700 dark:bg-zinc-950/50">
+  <div
+    class="rounded-xl border border-zinc-200 bg-zinc-50 shadow-xs dark:border-zinc-700 dark:bg-zinc-950/50"
+  >
     <DataView
       :value="filteredData"
       :layout="layout"
@@ -91,7 +93,17 @@ const toggleMenu = (event: Event, item: Usuario) => {
         </div>
       </template>
 
-      <template #paginatorcontainer="{ first, last, page, pageCount, prevPageCallback, nextPageCallback, totalRecords }">
+      <template
+        #paginatorcontainer="{
+          first,
+          last,
+          page,
+          pageCount,
+          prevPageCallback,
+          nextPageCallback,
+          totalRecords,
+        }"
+      >
         <div class="flex w-full items-center justify-between">
           <div class="flex items-center gap-4">
             <div class="flex gap-2">
@@ -112,7 +124,10 @@ const toggleMenu = (event: Event, item: Usuario) => {
                 class="size-9! shadow-xs"
               />
             </div>
-            <span class="text-sm! text-zinc-600 dark:text-zinc-400"> {{ (totalRecords || 0) > 0 ? first || 0 : 0 }} - {{ last || 0 }} de {{ totalRecords || 0 }} </span>
+            <span class="text-sm! text-zinc-600 dark:text-zinc-400">
+              {{ (totalRecords || 0) > 0 ? first || 0 : 0 }} - {{ last || 0 }} de
+              {{ totalRecords || 0 }}
+            </span>
           </div>
           <div class="flex items-center gap-2">
             <Select
@@ -187,7 +202,9 @@ const toggleMenu = (event: Event, item: Usuario) => {
       </template>
 
       <template #grid="slotProps">
-        <div class="grid grid-cols-1 gap-2 bg-white p-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 dark:bg-zinc-900">
+        <div
+          class="grid grid-cols-1 gap-2 bg-white p-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 dark:bg-zinc-900"
+        >
           <div
             v-for="item in slotProps.items"
             :key="item.id"
@@ -195,10 +212,14 @@ const toggleMenu = (event: Event, item: Usuario) => {
           >
             <div class="flex items-start justify-between">
               <div class="flex items-center gap-4">
-                <div class="grid size-10 place-items-center rounded-xl bg-emerald-100 font-bold text-emerald-500 ring ring-current/20 ring-inset dark:bg-emerald-500/10 dark:text-emerald-400">
+                <div
+                  class="grid size-10 place-items-center rounded-xl bg-emerald-100 font-bold text-emerald-500 ring ring-current/20 ring-inset dark:bg-emerald-500/10 dark:text-emerald-400"
+                >
                   <span class="text-lg!">{{ item.username.charAt(0) }}</span>
                 </div>
-                <span class="truncate text-base! font-semibold whitespace-nowrap">{{ item.username }}</span>
+                <span class="truncate text-base! font-semibold whitespace-nowrap">{{
+                  item.username
+                }}</span>
               </div>
               <Button
                 @click="toggleMenu($event, item)"

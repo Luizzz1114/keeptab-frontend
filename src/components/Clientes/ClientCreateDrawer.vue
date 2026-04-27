@@ -60,7 +60,9 @@ const onSubmit = (event: FormSubmitEvent) => {
     class="m-2! h-[calc(100dvh-1rem)]! w-[calc(100%-1rem)]! overflow-hidden rounded-2xl! border! md:w-180!"
   >
     <template #container="{ closeCallback }">
-      <div class="flex h-16 items-center justify-between border-b border-zinc-200 p-4 dark:border-zinc-700">
+      <div
+        class="flex h-16 items-center justify-between border-b border-zinc-200 p-4 dark:border-zinc-700"
+      >
         <div class="flex items-center gap-3">
           <div class="grid size-9 place-items-center rounded-lg bg-emerald-500 text-lg text-white">
             <i class="fi-sr-users"></i>
@@ -159,7 +161,9 @@ const onSubmit = (event: FormSubmitEvent) => {
             </div>
           </div>
         </div>
-        <div class="flex h-16 shrink-0 items-center justify-end gap-3 border-t border-zinc-200 p-4 dark:border-zinc-700">
+        <div
+          class="flex h-16 shrink-0 items-center justify-end gap-3 border-t border-zinc-200 p-4 dark:border-zinc-700"
+        >
           <Button
             @click="closeCallback"
             label="Cancelar"

@@ -24,7 +24,9 @@ const filteredData = computed(() => {
   if (!searchQuery.value || !props.data) return props.data;
   const query = searchQuery.value.toLowerCase();
   const camposDeBusqueda: (keyof Cliente)[] = ['nombre', 'cedula', 'contacto'];
-  return props.data.filter((item) => camposDeBusqueda.some((campo) => String(item[campo]).toLowerCase().includes(query)));
+  return props.data.filter((item) =>
+    camposDeBusqueda.some((campo) => String(item[campo]).toLowerCase().includes(query)),
+  );
 });
 
 const menuOptions = computed(() => [
@@ -55,7 +57,9 @@ const toggleMenu = (event: Event, item: Cliente) => {
 </script>
 
 <template>
-  <div class="rounded-xl border border-zinc-200 bg-zinc-50 shadow-xs dark:border-zinc-700 dark:bg-zinc-950/50">
+  <div
+    class="rounded-xl border border-zinc-200 bg-zinc-50 shadow-xs dark:border-zinc-700 dark:bg-zinc-950/50"
+  >
     <DataView
       :value="filteredData"
       :layout="layout"
@@ -91,7 +95,17 @@ const toggleMenu = (event: Event, item: Cliente) => {
         </div>
       </template>
 
-      <template #paginatorcontainer="{ first, last, page, pageCount, prevPageCallback, nextPageCallback, totalRecords }">
+      <template
+        #paginatorcontainer="{
+          first,
+          last,
+          page,
+          pageCount,
+          prevPageCallback,
+          nextPageCallback,
+          totalRecords,
+        }"
+      >
         <div class="flex w-full items-center justify-between">
           <div class="flex items-center gap-4">
             <div class="flex gap-2">
@@ -112,7 +126,10 @@ const toggleMenu = (event: Event, item: Cliente) => {
                 class="size-9! shadow-xs"
               />
             </div>
-            <span class="text-sm! text-zinc-600 dark:text-zinc-400"> {{ (totalRecords || 0) > 0 ? first || 0 : 0 }} - {{ last || 0 }} de {{ totalRecords || 0 }} </span>
+            <span class="text-sm! text-zinc-600 dark:text-zinc-400">
+              {{ (totalRecords || 0) > 0 ? first || 0 : 0 }} - {{ last || 0 }} de
+              {{ totalRecords || 0 }}
+            </span>
           </div>
           <div class="flex items-center gap-2">
             <Select
@@ -209,14 +226,18 @@ const toggleMenu = (event: Event, item: Cliente) => {
       </template>
 
       <template #grid="slotProps">
-        <div class="grid grid-cols-1 gap-2 bg-white p-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 dark:bg-zinc-900">
+        <div
+          class="grid grid-cols-1 gap-2 bg-white p-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 dark:bg-zinc-900"
+        >
           <div
             v-for="item in slotProps.items"
             :key="item.id"
             class="flex flex-col gap-2 rounded-2xl border border-zinc-200 bg-zinc-50 p-3 shadow-xs ring-2 ring-white ring-inset dark:border-zinc-700 dark:bg-zinc-800/65 dark:ring-zinc-900/65"
           >
             <div class="flex items-start justify-between">
-              <div class="grid size-10 place-items-center rounded-xl bg-emerald-100 font-bold text-emerald-500 ring ring-current/20 ring-inset dark:bg-emerald-500/10 dark:text-emerald-400">
+              <div
+                class="grid size-10 place-items-center rounded-xl bg-emerald-100 font-bold text-emerald-500 ring ring-current/20 ring-inset dark:bg-emerald-500/10 dark:text-emerald-400"
+              >
                 <span class="text-lg!">{{ item.nombre.charAt(0) }}</span>
               </div>
               <Button
@@ -229,8 +250,12 @@ const toggleMenu = (event: Event, item: Cliente) => {
             </div>
             <div class="flex items-end-safe justify-between">
               <div class="flex flex-col">
-                <span class="truncate text-base! font-semibold whitespace-nowrap">{{ item.nombre }}</span>
-                <span class="text-xs! font-medium text-zinc-400 dark:text-zinc-500">{{ item.cedula }}</span>
+                <span class="truncate text-base! font-semibold whitespace-nowrap">{{
+                  item.nombre
+                }}</span>
+                <span class="text-xs! font-medium text-zinc-400 dark:text-zinc-500">{{
+                  item.cedula
+                }}</span>
               </div>
               <div class="flex items-center gap-2">
                 <i class="fi-rr-phone-flip text-zinc-300 dark:text-zinc-600"></i>
@@ -241,7 +266,9 @@ const toggleMenu = (event: Event, item: Cliente) => {
             <Divider class="my-1!" />
             <div class="flex items-center justify-between">
               <div class="flex flex-col">
-                <span class="text-xs! font-bold text-zinc-500 dark:text-zinc-400">Total adeudado</span>
+                <span class="text-xs! font-bold text-zinc-500 dark:text-zinc-400"
+                  >Total adeudado</span
+                >
                 <span class="text-lg! font-extrabold">{{ formatCurrency(item.deuda) }}</span>
               </div>
               <div class="flex h-full flex-col items-end gap-1">

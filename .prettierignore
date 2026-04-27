@@ -1,0 +1,8 @@
+node_modules
+dist
+dist-ssr
+*.local
+.output
+.nuxt
+public
+src/assets

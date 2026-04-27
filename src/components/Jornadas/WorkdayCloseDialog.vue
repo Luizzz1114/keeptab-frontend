@@ -36,7 +36,9 @@ const onSubmit = (event: FormSubmitEvent) => {
     <template #container="{ closeCallback }">
       <div class="relative flex items-center justify-between p-6 dark:border-zinc-700">
         <div class="flex w-full flex-col items-center justify-center gap-2">
-          <div class="grid size-10 place-items-center rounded-xl border border-emerald-200 bg-emerald-100 text-lg dark:border-emerald-500/20 dark:bg-emerald-500/10">
+          <div
+            class="grid size-10 place-items-center rounded-xl border border-emerald-200 bg-emerald-100 text-lg dark:border-emerald-500/20 dark:bg-emerald-500/10"
+          >
             <i class="fi-sr-calendar-arrow-down text-xl text-emerald-500"></i>
           </div>
           <div class="flex flex-col">

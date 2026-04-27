@@ -91,7 +91,10 @@ const handleAddToCart = (producto: Producto) => {
 const handleIncrease = (item: CartItem) => {
   const cartItem = cart.value.find((i) => i.producto.id === item.producto.id);
   if (cartItem) {
-    if (!cartItem.producto.conteo || (cartItem.producto.stock !== null && cartItem.cantidad < cartItem.producto.stock)) {
+    if (
+      !cartItem.producto.conteo ||
+      (cartItem.producto.stock !== null && cartItem.cantidad < cartItem.producto.stock)
+    ) {
       cartItem.cantidad++;
     } else {
       showWarning('Stock máximo alcanzado');
@@ -128,7 +131,9 @@ const handleRemove = (item: CartItem) => {
     </div>
     <div class="flex flex-1 flex-col gap-4 lg:flex-row">
       <div class="flex flex-1 flex-col gap-4">
-        <div class="rounded-xl border border-zinc-200 bg-zinc-50 p-4 text-xs leading-tight text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/50 dark:text-zinc-400">
+        <div
+          class="rounded-xl border border-zinc-200 bg-zinc-50 p-4 text-xs leading-tight text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/50 dark:text-zinc-400"
+        >
           <span>Haz clic en los productos que el cliente desea llevar para armar la cuenta.</span>
         </div>
         <ProductsDataGrid

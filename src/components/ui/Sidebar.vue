@@ -27,13 +27,13 @@ const menuGroups: MenuGroup[] = [
   },
 ];
 
-const filteredMenuGroups = computed(() => 
+const filteredMenuGroups = computed(() =>
   menuGroups
-    .map(group => ({
+    .map((group) => ({
       ...group,
-      items: group.items.filter(item => !item.roles || item.roles.includes(userRole))
+      items: group.items.filter((item) => !item.roles || item.roles.includes(userRole)),
     }))
-    .filter(group => group.items.length > 0)
+    .filter((group) => group.items.length > 0),
 );
 
 const handleItemClick = () => {
@@ -55,7 +55,9 @@ const handleItemClick = () => {
   >
     <div class="flex h-full w-62 flex-col">
       <div class="mt-1.5 flex h-12 shrink-0 items-center gap-3 overflow-hidden px-4">
-        <div class="grid size-9 shrink-0 place-items-center rounded-lg bg-emerald-500 p-1 text-xl text-white">
+        <div
+          class="grid size-9 shrink-0 place-items-center rounded-lg bg-emerald-500 p-1 text-xl text-white"
+        >
           <i class="fi-sr-receipt"></i>
         </div>
         <span class="text-lg font-extrabold whitespace-nowrap">KeepTab</span>
@@ -88,7 +90,9 @@ const handleItemClick = () => {
                 class="group flex w-full items-center gap-3 rounded-xl p-1 ring ring-zinc-300/0 duration-250 ease-in-out hover:bg-zinc-100/50 hover:ring-zinc-300/40 dark:hover:bg-zinc-800/30 dark:hover:ring-zinc-700/35"
                 active-class="active ring ring-zinc-300/100 bg-zinc-100 shadow-xs dark:ring-zinc-700/75 dark:bg-zinc-800/40"
               >
-                <div class="grid size-7 shrink-0 place-items-center rounded-lg group-[.active]:bg-white group-[.active]:dark:bg-zinc-800">
+                <div
+                  class="grid size-7 shrink-0 place-items-center rounded-lg group-[.active]:bg-white group-[.active]:dark:bg-zinc-800"
+                >
                   <i
                     :class="item.icon"
                     class="text-[0.95rem] text-zinc-500 group-[.active]:text-emerald-500 dark:text-zinc-400"

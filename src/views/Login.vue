@@ -45,7 +45,9 @@ const onSubmit = async (event: FormSubmitEvent) => {
 </script>
 
 <template>
-  <div class="dark:text-zinc-150 flex h-full w-full max-w-108 flex-col justify-center gap-8 px-2 pb-8 text-zinc-700">
+  <div
+    class="dark:text-zinc-150 flex h-full w-full max-w-108 flex-col justify-center gap-8 px-2 pb-8 text-zinc-700"
+  >
     <div class="flex flex-col">
       <span class="text-xl font-bold text-zinc-700 dark:text-zinc-200">Iniciar sesión</span>
       <span class="text-sm text-zinc-400">Ingrese sus credenciales para continuar</span>

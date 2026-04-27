@@ -17,7 +17,9 @@ const onConfirm = () => {
     <template #container="{ closeCallback }">
       <div class="relative flex items-center justify-between p-6 dark:border-zinc-700">
         <div class="flex w-full flex-col items-center justify-center gap-2">
-          <div class="grid size-10 place-items-center rounded-xl border border-red-200 bg-red-100 text-lg dark:border-red-500/20 dark:bg-red-500/10">
+          <div
+            class="grid size-10 place-items-center rounded-xl border border-red-200 bg-red-100 text-lg dark:border-red-500/20 dark:bg-red-500/10"
+          >
             <i class="fi-sr-exit text-xl text-red-400"></i>
           </div>
           <div class="flex flex-col">
@@ -38,7 +40,9 @@ const onConfirm = () => {
             class="flex flex-col items-center justify-center gap-2 rounded-2xl border border-zinc-200 bg-zinc-50 p-4 shadow-xs ring-2 ring-white ring-inset dark:border-zinc-700 dark:bg-zinc-800/65 dark:ring-zinc-900/65"
           >
             <span class="text-center text-base! font-bold">¿Está seguro de salir del sistema?</span>
-            <span class="text-center text-sm text-zinc-500 dark:text-zinc-400"> Tendrá que volver a ingresar sus credenciales para acceder. </span>
+            <span class="text-center text-sm text-zinc-500 dark:text-zinc-400">
+              Tendrá que volver a ingresar sus credenciales para acceder.
+            </span>
           </div>
         </div>
 
