@@ -64,7 +64,7 @@ keeptab-frontend/          # Frontend — Vue 3 + PrimeVue + TailwindCSS
 │   ├── api/               # Configuración y servicios de API
 │   ├── assets/            # Recursos estáticos
 │   ├── components/        # Componentes reutilizables
-│   ├── compsables/        # Composables de Vue
+│   ├── composables/       # Composables de Vue
 │   ├── plugins/           # Plugins de Vue
 │   ├── router/            # Configuración de rutas
 │   ├── schemas/           # Esquemas Zod para validación
