@@ -1,8 +1,42 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth.store';
 import { getFormattedDate } from '@/utils/formatters';
+import { ref } from 'vue';
+import type { Usuario } from '@/types/usuarios.types';
+import authService from '@/api/services/auth.service';
+import LogoutDialog from './LogoutDialog.vue';
 
-defineProps<{ isDark: boolean }>();
+const router = useRouter();
+
+defineProps<{ isDark: boolean; isCollapsed: boolean }>();
 const emit = defineEmits(['toggle-sidebar', 'toggle-dark-mode']);
+const authStore = useAuthStore();
+const usuario: Usuario = authStore.getData;
+
+const menu = ref<any>(null);
+const toggleMenu = (event: any) => {
+  menu.value?.toggle(event);
+};
+
+const showLogoutDialog = ref(false);
+
+const menuOptions = [
+  {
+    label: 'Cerrar sesión',
+    icon: 'fi-rr-exit',
+    class: 'menu-item-danger',
+    command: () => {
+      showLogoutDialog.value = true;
+    },
+  },
+];
+
+const handleLogout = async () => {
+  await authService.logout();
+  authStore.logout();
+  router.push('/login');
+};
 </script>
 
 <template>
@@ -44,10 +78,37 @@ const emit = defineEmits(['toggle-sidebar', 'toggle-dark-mode']);
       />
       <div class="p-1">
         <Button
-          icon="fi-sr-user"
+          @click="toggleMenu($event)"
+          :icon="usuario.rol === 'ADMIN' ? 'fi-sr-admin-alt' : 'fi-sr-user'"
           class="size-8!"
         ></Button>
       </div>
     </div>
   </header>
+  <Menu
+    ref="menu"
+    :popup="true"
+    :model="menuOptions"
+    class="mt-4! overflow-hidden rounded-lg!"
+  >
+    <template #start>
+      <div class="flex w-full items-center gap-2 border-b border-zinc-200 p-2 dark:border-zinc-700">
+        <div class="flex size-8 items-center justify-center rounded-lg bg-emerald-500">
+          <i
+            class="text-white dark:text-zinc-800"
+            :class="usuario.rol === 'ADMIN' ? 'fi-sr-admin-alt' : 'fi-sr-user'"
+          ></i>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-sm! font-bold">{{ usuario?.username }}</span>
+          <span class="-mt-0.5 text-xs!">{{ usuario?.rol === 'ADMIN' ? 'Administrador' : 'Usuario' }}</span>
+        </div>
+      </div>
+    </template>
+  </Menu>
+
+  <LogoutDialog
+    v-model:visible="showLogoutDialog"
+    @confirmLogout="handleLogout"
+  />
 </template>

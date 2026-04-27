@@ -8,18 +8,18 @@ import SalesDataList from '@/components/Jornadas/SalesDataList.vue';
 import WorkdayOpenDialog from '@/components/Jornadas/WorkdayOpenDialog.vue';
 import WorkdayCloseDialog from '@/components/Jornadas/WorkdayCloseDialog.vue';
 import DialogDelete from '@/components/ui/DialogDelete.vue';
-
+import SaleDetailsDrawer from '@/components/Jornadas/SaleDetailsDrawer.vue';
 import jornadasService from '@/api/services/jornadas.service';
-
+import ventasService from '@/api/services/ventas.service';
 import { useNotifications } from '@/componsables/useNotificaciones';
 import { formatCurrency, formatTinyDate } from '@/utils/formatters';
-
-import ventasService from '@/api/services/ventas.service';
-
-import SaleDetailsDrawer from '@/components/Jornadas/SaleDetailsDrawer.vue';
+import { useAuthStore } from '@/stores/auth.store';
 
 // --- Configuración de la vista ---
 const { showSuccess, showError } = useNotifications();
+
+const authStore = useAuthStore();
+const userRole = authStore.user?.rol || 'USER';
 
 const items = [{ label: 'Jornadas', route: '/jornadas' }];
 
@@ -83,7 +83,7 @@ const create = async (jornada: Jornada) => {
 
 const getActual = async () => {
   try {
-    const res = await jornadasService.getActual() || null;
+    const res = (await jornadasService.getActual()) || null;
     workday.value = res.data;
   } catch (error: any) {
     if (error.response.status === 404) return;
@@ -159,7 +159,7 @@ onMounted(async () => {
           class="flex! h-9! items-center! shadow-xs!"
         />
         <Button
-          v-if="!workday?.id"
+          v-if="!workday?.id && userRole === 'ADMIN'"
           @click="isDialogRegisterOpen = true"
           label="Abrir jornada"
           icon="fi-br-calendar-arrow-up"
@@ -167,11 +167,11 @@ onMounted(async () => {
           class="flex! h-9! items-center! shadow-xs!"
         />
         <div
-          v-else
+          v-else-if="userRole === 'ADMIN'"
           class="flex items-center gap-3"
         >
           <Button
-            @click="handleDeleteWorkdayRequest(workday)"
+            @click="handleDeleteWorkdayRequest(workday as JornadaActual)"
             icon="fi-br-trash"
             outlined
             size="small"

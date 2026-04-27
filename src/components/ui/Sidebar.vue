@@ -1,8 +1,13 @@
 <script setup lang="ts">
+import { useAuthStore } from '@/stores/auth.store';
 import type { MenuGroup } from '@/types/ui.types';
+import { computed } from 'vue';
 
 defineProps<{ isCollapsed: boolean }>();
 const emit = defineEmits(['toggle-sidebar']);
+
+const authStore = useAuthStore();
+const userRole = authStore.getData?.rol || 'USER';
 
 const menuGroups: MenuGroup[] = [
   {
@@ -17,10 +22,19 @@ const menuGroups: MenuGroup[] = [
     title: 'Gestión',
     items: [
       { name: 'Jornadas', path: '/jornadas', icon: 'fi-sr-calendar' },
-      { name: 'Usuarios', path: '/usuarios', icon: 'fi-sr-user' },
+      { name: 'Usuarios', path: '/usuarios', icon: 'fi-sr-user', roles: ['ADMIN'] },
     ],
   },
 ];
+
+const filteredMenuGroups = computed(() => 
+  menuGroups
+    .map(group => ({
+      ...group,
+      items: group.items.filter(item => !item.roles || item.roles.includes(userRole))
+    }))
+    .filter(group => group.items.length > 0)
+);
 
 const handleItemClick = () => {
   if (window.innerWidth < 768) {
@@ -48,7 +62,7 @@ const handleItemClick = () => {
       </div>
       <nav class="flex flex-1 flex-col overflow-x-hidden overflow-y-auto p-4 text-sm">
         <div
-          v-for="(group, index) in menuGroups"
+          v-for="(group, index) in filteredMenuGroups"
           :key="group.title"
           class="flex flex-col"
         >
