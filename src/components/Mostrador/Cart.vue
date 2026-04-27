@@ -38,7 +38,6 @@ const procesar = (estatus: 'CREDITO' | 'CONTADO') => {
     isClientInvalid.value = true;
     return;
   }
-
   const formattedDetails = props.cart.map((item) => ({
     cantidad: item.cantidad,
     producto_id: item.producto.id,
@@ -82,7 +81,7 @@ const procesar = (estatus: 'CREDITO' | 'CONTADO') => {
 
   <div
     :class="isMobileOpen ? 'translate-x-0' : 'translate-x-[120%]'"
-    class="fixed inset-0 z-70 m-auto flex h-[calc(100%-1rem)] lg:h-full! w-[calc(100%-1rem)] flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-xs transition-transform duration-300 ease-[ease] lg:static lg:w-100 lg:translate-x-0 dark:border-zinc-700 dark:bg-zinc-900"
+    class="fixed inset-0 z-70 m-auto flex h-[calc(100%-1rem)] w-[calc(100%-1rem)] flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-xs transition-transform duration-300 ease-[ease] lg:static lg:h-full! lg:w-100 lg:translate-x-0 dark:border-zinc-700 dark:bg-zinc-900"
   >
     <div class="flex h-16 shrink-0 items-center justify-between border-b border-dashed border-zinc-200 p-4 dark:border-zinc-700">
       <div class="flex items-center gap-3">
@@ -164,6 +163,7 @@ const procesar = (estatus: 'CREDITO' | 'CONTADO') => {
           :invalid="isClientInvalid"
           @change="isClientInvalid = false"
           class="w-full"
+          filter
         />
         <Message
           v-if="isClientInvalid"
