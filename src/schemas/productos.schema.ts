@@ -46,7 +46,7 @@ export const iconsByCategory: { [key: string]: string } = {
   'Comestibles': 'fi-rr-restaurant',
   'Artículos de limpieza': 'fi-rr-broom',
   'Bebidas': 'fi-rr-drink-alt',
-  'Higiene personal': 'fi-rr-pump-soap',
+  'Higiene personal': 'fi-rr-soap',
   'Lácteos y Embutidos': 'fi-rr-cheese',
   'Snacks y Dulces': 'fi-rr-bowl-soft-serve',
   'Papelería': 'fi-rr-document',
