@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import type { Menu } from 'primevue';
 import type { Venta } from '@/types/ventas.types';
 import { formatCurrency, getTimeAgo } from '@/utils/formatters';
 
@@ -9,7 +10,7 @@ const emit = defineEmits(['view', 'delete']);
 
 // --- Estado (Refs) ---
 const rows = ref<number>(5); // Número de filas por defecto
-const menu = ref<any>(null);
+const menu = ref<InstanceType<typeof Menu> | null>(null);
 const selectedItem = ref<Venta | null>(null);
 
 // --- Lógica del Menú de Opciones ---

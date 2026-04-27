@@ -12,13 +12,10 @@ const props = defineProps<{
 // --- Lógica de Agrupación de Productos ---
 const resumenProductos = computed(() => {
   if (!props.jornada?.ventas) return [];
-
   const resumen = new Map<string, { nombre: string; cantidad: number }>();
-
   props.jornada.ventas.forEach((venta: any) => {
-    // Verificamos que la venta tenga detalles
-    if (venta.detalles_venta && venta.detalles_venta.length > 0) {
-      venta.detalles_venta.forEach((detalle: any) => {
+    if (venta.detalles && venta.detalles.length > 0) {
+      venta.detalles.forEach((detalle: any) => {
         const nombre = detalle.producto?.nombre || 'Producto desconocido';
         const cantidad = Number(detalle.cantidad) || 0;
 
@@ -30,8 +27,6 @@ const resumenProductos = computed(() => {
       });
     }
   });
-
-  // Convertimos el Map a un array y lo ordenamos de mayor a menor cantidad
   return Array.from(resumen.values()).sort((a, b) => b.cantidad - a.cantidad);
 });
 

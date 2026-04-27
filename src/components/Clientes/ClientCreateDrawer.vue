@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import type { Cliente } from '@/types/clientes.types';
+import type { FormSubmitEvent } from '@primevue/forms';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { getClienteSchema } from '@/schemas/clientes.schema';
 import clientesService from '@/api/services/clientes.service';
@@ -43,9 +44,10 @@ const checkCedula = (cedula: string): Promise<boolean> => {
 const clienteSchema = getClienteSchema(checkCedula);
 const resolver = ref(zodResolver(clienteSchema));
 
-const onSubmit = (event: any) => {
+const onSubmit = (event: FormSubmitEvent) => {
   if (!event.valid) return;
-  emit('confirmCreate', event.values);
+  const data = event.values as Cliente;
+  emit('confirmCreate', data);
   visible.value = false;
 };
 </script>

@@ -18,7 +18,7 @@ const items = [{ label: 'Productos', route: '/productos' }];
 // --- Funciones de los Modales ---
 const isDrawerRegisterOpen = ref<boolean>(false);
 const isDrawerEditOpen = ref<boolean>(false);
-const confirmDialogRef = ref<any>(null);
+const confirmDialogRef = ref<{ openConfirm: (item: any, details: any) => void } | null>(null);
 
 const handleEditRequest = async (item: Producto) => {
   selectedProduct.value = item;
@@ -34,7 +34,7 @@ const handleDeleteRequest = (item: Producto) => {
     Precio: formatCurrency(item.precio),
     Stock: item.conteo ? `${item.stock} unid.` : '\u221E Infinito',
   };
-  confirmDialogRef.value.openConfirm(item, info);
+  confirmDialogRef.value?.openConfirm(item, info);
 };
 
 // --- Operaciones con la API ---

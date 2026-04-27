@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import type { Jornada } from '@/types/jornadas.types';
+import type { FormSubmitEvent } from '@primevue/forms';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { createJornadaSchema } from '@/schemas/jornadas.schema';
 
@@ -13,9 +14,10 @@ const jornada = ref<Jornada>({
 
 const resolver = zodResolver(createJornadaSchema);
 
-const onSubmit = (event: any) => {
+const onSubmit = (event: FormSubmitEvent) => {
   if (!event.valid) return;
-  emit('confirmCreate', event.values);
+  const data = event.values as Jornada;
+  emit('confirmCreate', data);
   visible.value = false;
 };
 </script>

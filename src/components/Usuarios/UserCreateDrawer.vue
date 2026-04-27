@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import type { UsuarioForm } from '@/types/usuarios.types';
+import type { FormSubmitEvent } from '@primevue/forms';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { getUsuarioSchema, roles } from '@/schemas/usuarios.schema';
 import usuariosService from '@/api/services/usuarios.service';
@@ -45,9 +46,10 @@ const checkUsernameAvailability = (username: string): Promise<boolean> => {
 const usuarioSchema = getUsuarioSchema(false, checkUsernameAvailability);
 const resolver = zodResolver(usuarioSchema);
 
-const onSubmit = (event: any) => {
+const onSubmit = (event: FormSubmitEvent) => {
   if (!event.valid) return;
-  emit('confirmCreate', event.values);
+  const data = event.values as UsuarioForm;
+  emit('confirmCreate', data);
   visible.value = false;
 };
 </script>

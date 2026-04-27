@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import type { Usuario } from '@/types/usuarios.types';
 import Breadcrumb from '@/components/ui/CustomBreadcrumb.vue';
@@ -17,7 +18,7 @@ const items = [{ label: 'Usuarios', route: '/usuarios' }];
 // --- Funciones de los Modales ---
 const isDrawerRegisterOpen = ref<boolean>(false);
 const isDrawerEditOpen = ref<boolean>(false);
-const confirmDialogRef = ref<any>(null);
+const confirmDialogRef = ref<{ openConfirm: (item: any, details: any) => void } | null>(null);
 
 const handleEditRequest = async (item: Usuario) => {
   selectedUser.value = item;
@@ -31,7 +32,7 @@ const handleDeleteRequest = (item: Usuario) => {
     'Nombre de usuarios': item.username,
     Rol: item.rol === 'ADMIN' ? 'Administrador' : 'Usuario',
   };
-  confirmDialogRef.value.openConfirm(item, info);
+  confirmDialogRef.value?.openConfirm(item, info);
 };
 
 // --- Operaciones con la API ---

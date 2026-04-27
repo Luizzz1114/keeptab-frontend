@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import type { Menu } from 'primevue';
+import type { Usuario } from '@/types/usuarios.types';
 import { useAuthStore } from '@/stores/auth.store';
 import { getFormattedDate } from '@/utils/formatters';
-import { ref } from 'vue';
-import type { Usuario } from '@/types/usuarios.types';
+
 import authService from '@/api/services/auth.service';
 import LogoutDialog from './LogoutDialog.vue';
 
@@ -14,8 +16,8 @@ const emit = defineEmits(['toggle-sidebar', 'toggle-dark-mode']);
 const authStore = useAuthStore();
 const usuario: Usuario = authStore.getData;
 
-const menu = ref<any>(null);
-const toggleMenu = (event: any) => {
+const menu = ref<InstanceType<typeof Menu> | null>(null);
+const toggleMenu = (event: Event) => {
   menu.value?.toggle(event);
 };
 
@@ -33,9 +35,9 @@ const menuOptions = [
 ];
 
 const handleLogout = async () => {
-  await authService.logout();
   authStore.logout();
   router.push('/login');
+  await authService.logout();
 };
 </script>
 

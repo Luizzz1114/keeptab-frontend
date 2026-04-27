@@ -21,7 +21,7 @@ const items = [{ label: 'Cuentas claras', route: '/cuentas' }];
 const isDrawerOpen = ref<boolean>(false);
 const isDrawerRegisterOpen = ref<boolean>(false);
 const isDrawerEditOpen = ref<boolean>(false);
-const confirmDialogRef = ref<any>(null);
+const confirmDialogRef = ref<{ openConfirm: (item: any, details: any) => void } | null>(null);
 
 const handleViewRequest = async (item: Cliente) => {
   selectedCliente.value = await getById(item.id);
@@ -43,12 +43,12 @@ const handleDeleteRequest = (item: Cliente) => {
     Cédula: item.cedula,
     Contacto: item.contacto || 'N/A',
   };
-  confirmDialogRef.value.openConfirm(item, info);
+  confirmDialogRef.value?.openConfirm(item, info);
 };
 
 // --- Operaciones con la API ---
 const clientes = ref<Cliente[]>([]);
-const selectedCliente = ref<any>(null);
+const selectedCliente = ref<Cliente | null>(null);
 
 const create = async (cliente: Cliente) => {
   try {

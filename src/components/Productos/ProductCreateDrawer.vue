@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onUnmounted, ref } from 'vue';
 import type { Producto } from '@/types/productos.types';
+import type { FormSubmitEvent } from '@primevue/forms';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { getProductoSchema, productCategories, countingOptions } from '@/schemas/productos.schema';
 import productosService from '@/api/services/productos.service';
@@ -46,9 +47,9 @@ const checkNameAvailability = (nombre: string): Promise<boolean> => {
 const productoSchema = getProductoSchema(checkNameAvailability);
 const resolver = zodResolver(productoSchema);
 
-const onSubmit = (event: any) => {
+const onSubmit = (event: FormSubmitEvent) => {
   if (!event.valid) return;
-  const data = event.values;
+  const data = event.values as Producto;
   const payload: Producto = {
     ...data,
     stock: data.conteo ? data.stock : 0,

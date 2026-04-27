@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import type { UsuarioForm } from '@/types/usuarios.types';
+import type { FormSubmitEvent } from '@primevue/forms';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { loginSchema } from '@/schemas/login.schema';
 import { useNotifications } from '@/composables/useNotifications';
@@ -18,7 +19,7 @@ const cargando = ref<boolean>(false);
 const router = useRouter();
 const resolver = zodResolver(loginSchema);
 
-const onSubmit = async (event: any) => {
+const onSubmit = async (event: FormSubmitEvent) => {
   if (!event.valid) return;
   const authStore = useAuthStore();
   cargando.value = true;

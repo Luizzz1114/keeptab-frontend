@@ -26,7 +26,7 @@ const items = [{ label: 'Jornadas', route: '/jornadas' }];
 // --- Funciones de los Modales ---
 const isDialogRegisterOpen = ref<boolean>(false);
 const isDialogEditOpen = ref<boolean>(false);
-const confirmDialogRef = ref<any>(null);
+const confirmDialogRef = ref<{ openConfirm: (item: any, details: any) => void } | null>(null);
 const removeType = ref<'jornada' | 'venta' | null>(null);
 
 const handleDeleteWorkdayRequest = (item: JornadaActual) => {
@@ -37,7 +37,7 @@ const handleDeleteWorkdayRequest = (item: JornadaActual) => {
     'Ventas en efectivo': formatCurrency(item.ventas_efectivo || 0),
     'Total esperado': formatCurrency(item.total_esperado || 0),
   };
-  confirmDialogRef.value.openConfirm(item, info);
+  confirmDialogRef.value?.openConfirm(item, info);
 };
 
 const handleDeleteSaleRequest = (item: Venta) => {
@@ -47,7 +47,7 @@ const handleDeleteSaleRequest = (item: Venta) => {
     Total: formatCurrency(item.total || 0),
     Estatus: item.estatus === 'CONTADO' ? 'De contado' : 'A crédito',
   };
-  confirmDialogRef.value.openConfirm(item, info);
+  confirmDialogRef.value?.openConfirm(item, info);
 };
 
 const handleConfirmDelete = async (id: number) => {

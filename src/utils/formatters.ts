@@ -30,7 +30,8 @@ export const formatTinyDate = (dateInput: string | Date | null | undefined): str
   }).format(date);
 };
 
-export const getTimeAgo = (dateString: string) => {
+export const getTimeAgo = (dateString: string | Date | null | undefined): string => {
+  if (!dateString) return '-';
   const date = new Date(dateString);
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();

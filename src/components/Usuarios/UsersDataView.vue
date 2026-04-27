@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import type { Menu } from 'primevue';
 import type { Usuario } from '@/types/usuarios.types';
 import type { LayoutType } from '@/types/ui.types';
 
@@ -14,7 +15,7 @@ const options = ref<LayoutType[]>(['list', 'grid']);
 const rows = ref<number>(8);
 const searchQuery = ref<string>('');
 
-const menu = ref<any>(null);
+const menu = ref<InstanceType<typeof Menu> | null>(null);
 const selectedItem = ref<Usuario | null>(null);
 
 // --- 3. Propiedades Computadas ---

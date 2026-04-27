@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import type { Menu } from 'primevue';
 import type { Jornada } from '@/types/jornadas.types';
 import { formatCurrency, formatTinyDate } from '@/utils/formatters';
 
@@ -9,7 +10,7 @@ const emit = defineEmits<{ (e: 'view-details', jornada: Jornada): void }>();
 
 // --- 2. Estado (Refs) ---
 const searchQuery = ref<string>('');
-const menu = ref<any>(null);
+const menu = ref<InstanceType<typeof Menu> | null>(null);
 const selectedItem = ref<Jornada | null>(null);
 const rows = ref<number>(5);
 

@@ -1,7 +1,7 @@
 import type { Venta } from './ventas.types';
 
 export interface Jornada {
-  id?: number;
+  id?: number | null | undefined;
   apertura?: Date;
   cierre?: Date | null;
   fondo_inicial?: number;

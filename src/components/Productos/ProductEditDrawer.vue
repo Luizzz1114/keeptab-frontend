@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onUnmounted, ref } from 'vue';
 import type { Producto } from '@/types/productos.types';
+import type { FormSubmitEvent } from '@primevue/forms';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { getProductoSchema, productCategories, countingOptions } from '@/schemas/productos.schema';
 import productosService from '@/api/services/productos.service';
@@ -36,10 +37,10 @@ const checkNameAvailability = (nombre: string): Promise<boolean> => {
       try {
         const response = await productosService.search(nombre);
         const disponible = response.data.length === 0;
-        validationCache.set(nombre, disponible); 
+        validationCache.set(nombre, disponible);
         resolve(disponible);
       } catch (error) {
-        resolve(false); 
+        resolve(false);
       } finally {
         isCheckingName.value = false;
       }
@@ -50,9 +51,9 @@ const checkNameAvailability = (nombre: string): Promise<boolean> => {
 const productoSchema = getProductoSchema(checkNameAvailability);
 const resolver = zodResolver(productoSchema);
 
-const onSubmit = (event: any) => {
+const onSubmit = (event: FormSubmitEvent) => {
   if (!event.valid) return;
-  const data = event.values;
+  const data = event.values as Producto;
   const payload: Producto = {
     ...data,
     id: props.producto?.id,
@@ -119,7 +120,10 @@ onUnmounted(() => {
                   fluid
                 />
                 <InputIcon>
-                  <i v-if="isCheckingName" class="fi-rr-spinner animate-spin text-emerald-500"></i>
+                  <i
+                    v-if="isCheckingName"
+                    class="fi-rr-spinner animate-spin text-emerald-500"
+                  ></i>
                 </InputIcon>
               </IconField>
               <Message
