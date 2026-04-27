@@ -2,7 +2,7 @@ import api from '@/api/axios';
 import type { Jornada } from '@/types/jornadas.types';
 
 export default {
-  async create(jornada: Jornada) {
+  async open(jornada: Jornada) {
     const res = await api.post('/jornadas/abrir', jornada);
     return res.data;
   },
@@ -22,7 +22,7 @@ export default {
     return res.data;
   },
 
-  async update(jornada: Jornada) {
+  async close(jornada: Jornada) {
     const res = await api.patch(`/jornadas/${jornada.id}/cerrar`, jornada);
     return res.data;
   },
