@@ -237,7 +237,7 @@ El sistema implementa control de acceso basado en roles:
 | **ADMIN** | Acceso completo a todas las funcionalidades, incluyendo gestión de usuarios |
 | **USER**  | Acceso al mostrador, productos, jornadas y cuentas claras                   |
 
-> [!WARNING]
+> [!NOTE]
 > Control de Acceso (RBAC): Las rutas del frontend están protegidas mediante Guards del router. Los usuarios con rol USER no podrán acceder a vistas administrativas como /usuarios, limitándose al mostrador, inventario y jornadas.
 
 ### Endpoints consumidos
@@ -252,7 +252,7 @@ El sistema implementa control de acceso basado en roles:
 | Jornadas  | GET, POST, PATCH, DELETE              |
 | Usuarios  | GET, POST, PATCH, DELETE              |
 
-> [!INFO]
+> [!NOTE]
 > Consulta la documentación completa de la API en el [README del backend](https://github.com/Luizzz1114/keeptab-backend).
 
 ## Scripts Disponibles
