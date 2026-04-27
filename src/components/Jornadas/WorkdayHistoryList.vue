@@ -18,9 +18,7 @@ const rows = ref<number>(5);
 const filteredData = computed(() => {
   if (!searchQuery.value || !props.data) return props.data;
   const query = searchQuery.value.toLowerCase();
-  return props.data.filter(
-    (item) => String(item.id).includes(query) || (item.estatus || '').toLowerCase().includes(query),
-  );
+  return props.data.filter((item) => String(item.id).includes(query) || (item.estatus || '').toLowerCase().includes(query));
 });
 
 const menuOptions = computed(() => [

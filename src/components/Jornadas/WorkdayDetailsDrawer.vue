@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { formatCurrency, formatTinyDate, getTimeAgo } from '@/utils/formatters';
 import type { Jornada } from '@/types/jornadas.types';
+import type { DetalleVenta, Venta } from '@/types/ventas.types';
 
 const visible = defineModel<boolean>('visible');
 
@@ -13,9 +14,9 @@ const props = defineProps<{
 const resumenProductos = computed(() => {
   if (!props.jornada?.ventas) return [];
   const resumen = new Map<string, { nombre: string; cantidad: number }>();
-  props.jornada.ventas.forEach((venta: any) => {
+  props.jornada.ventas.forEach((venta: Venta) => {
     if (venta.detalles && venta.detalles.length > 0) {
-      venta.detalles.forEach((detalle: any) => {
+      venta.detalles.forEach((detalle: DetalleVenta) => {
         const nombre = detalle.producto?.nombre || 'Producto desconocido';
         const cantidad = Number(detalle.cantidad) || 0;
 
