@@ -10,8 +10,8 @@ export interface Venta {
   cliente_id?: Cliente['id'];
   detalles: DetalleVenta[];
   abonos?: Abono[];
-  created_at?: any;
-  fecha?: string;
+  created_at?: string | Date;
+  fecha?: string | Date;
 }
 
 export interface DetalleVenta {
